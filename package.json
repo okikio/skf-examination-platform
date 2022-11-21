@@ -1,0 +1,23 @@
+{
+  "name": "skf-dashboard",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "format": "prettier --write .",
+    "check:format": "prettier --check ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.1.0",
+    "astro": "^1.6.10"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "prettier-plugin-astro": "^0.7.0"
+  }
+}
