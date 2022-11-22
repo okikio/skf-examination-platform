@@ -1,0 +1,32 @@
+---
+const isLogin = true;
+---
+
+<div class="nav wrapper">
+    <p>LOGO</p>
+    <ul>
+        <li><a href="/">Home</a></li>
+
+        {isLogin? <li><a href="/dashboard">Dashboard</a></li> : ""}
+        {!isLogin? <li><a href="/login">Login</a></li> : ""}
+        {!isLogin? <li><a href="/register">Register</a></li> : ""}
+        {isLogin? <li><a href="/profile">Profile</a></li> : ""}
+    </ul>
+</div>
+
+<style>
+    .nav{
+        display: flex;
+        flex-direction: row;
+
+        justify-content: space-between;
+    }
+
+    .nav ul{
+        list-style: none;
+
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+    }
+</style>
