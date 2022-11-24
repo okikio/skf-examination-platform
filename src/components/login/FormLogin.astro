@@ -1,22 +1,8 @@
 ---
 import { LoginInpout } from "./LoginInput";
+import LoginRegisterStyle from "../../layouts/LoginRegisterStyle.astro";
 ---
 
-<div class="wrapper">
+<LoginRegisterStyle>
   <LoginInpout client:load />
-</div>
-
-<style>
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-  }
-
-  .wrapper :global(form) {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-</style>
+</LoginRegisterStyle>
