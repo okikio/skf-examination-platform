@@ -1,11 +1,11 @@
 ---
-import Baselayout from "../layouts/Baselayout.astro";
-import FormLogin from "../components/login/FormLogin.astro";
+import LoginRegisterLayout from "../layouts/LoginRegisterLayout.astro";
+import FormLogin from "../components/RegisterAndLogin.svelte";
 ---
 
-<Baselayout title="SKF | Login">
-  <FormLogin />
-</Baselayout>
+<LoginRegisterLayout title="SKF | Login">
+  <FormLogin client:load mode="login" />
+</LoginRegisterLayout>
 
 <style>
   :global(body) {
