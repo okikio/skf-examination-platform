@@ -9,6 +9,9 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:astro/recommended",
   ],
+  rules: {
+    "no-console": ["error", { allow: ["warn", "error"] }],
+  },
   overrides: [
     {
       files: ["*.astro"],
@@ -31,9 +34,6 @@ module.exports = {
   },
   plugins: ["svelte3", "@typescript-eslint"],
   ignorePatterns: ["**/dist/**/*"],
-  rules: {
-    "no-console": ["error", { allow: ["warn", "error"] }],
-  },
   settings: {
     "svelte3/typescript": true, // load TypeScript as peer dependency
   },
