@@ -25,15 +25,13 @@
   });
 
   onMount(() => {
-    const quizzesEl = document.querySelector("#quizzes")!;
+    const quizzesEl = document.querySelector("#quizzes");
     // Intersection Observer
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log("Element is in view");
             $labStore = { ...$labStore, "write-up": true };
-          } else {
           }
         });
       },
@@ -43,8 +41,7 @@
         threshold: 0.5,
       }
     );
-
-    observer.observe(quizzesEl);
+    if (quizzesEl) observer.observe(quizzesEl);
   });
 </script>
 
