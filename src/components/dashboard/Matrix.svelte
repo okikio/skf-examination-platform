@@ -16,13 +16,19 @@
   }
 
   const labels = [
-    "Module 1",
-    "Module 2",
-    "Module 3",
-    "Module 4",
-    "Module 5",
-    "Module 6",
-    "Module 7",
+    "Architecture, Design and Threat Modeling",
+    "Authentication",
+    "Session Management",
+    "Access Control",
+    "Validation, Sanitization and Encoding",
+    "Stored Cryptography",
+    "Error Handling and Logging",
+    "Data Protection",
+    "Communications",
+    "Business Logic",
+    "File and Resources",
+    "API and Web Service",
+    "Configuration",
   ];
 
   const data: ChartData = {
@@ -61,6 +67,11 @@
     type: "radar",
     data: data,
     options: {
+      elements: {
+        line: {
+          backgroundColor: "rgba(255, 0, 0, 0.3)",
+        },
+      },
       plugins: {
         customCanvasBackgroundColor: {
           color: "#313359",
