@@ -1,5 +1,5 @@
 import type { Provider } from "@supabase/supabase-js";
-import { supabase } from "../db";
+import { supabase } from "../client";
 
 export async function loginWithProvider(provider: Provider) {
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -11,7 +11,6 @@ export async function loginWithProvider(provider: Provider) {
     return { data, error: true, message: error.message };
   }
 
-  document.cookie = "loggedIn=true";
   return { data, error: false };
 }
 

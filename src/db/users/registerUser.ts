@@ -1,4 +1,4 @@
-import { supabase } from "../db";
+import { supabase } from "../client";
 
 export async function registerUser(email: string, password: string) {
   const { data, error } = await supabase.auth.signUp({
@@ -6,7 +6,6 @@ export async function registerUser(email: string, password: string) {
     password,
   });
   if (error) {
-    // console.log(error);
     return { data, error: true, message: error.message };
   }
   return { data, error: false };
