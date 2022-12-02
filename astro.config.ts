@@ -27,7 +27,9 @@ export default defineConfig({
     }),
   ],
   output: "server",
-  adapter: netlify(),
+  adapter: netlify({
+    dist: new URL("./dist/", import.meta.url),
+  }),
   vite: {
     optimizeDeps: {
       // Add both @codemirror/state and @codemirror/view to included deps for optimization
