@@ -30,6 +30,8 @@ import { Text } from "@codemirror/state";
 import { createStore } from "solid-js/store";
 import { EditorState } from "@codemirror/state";
 
+import "./Editor.scss";
+
 export function Editor(props: ComponentProps<"div"> & CodeMirrorProps) {
   let ref: HTMLDivElement | undefined;
   const [codemirrorProps, others] = splitProps(props, [

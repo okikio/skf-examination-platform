@@ -12,6 +12,8 @@ import { createModel } from "./utils/model";
 
 import FluentAdd24Regular from '~icons/fluent/add-24-regular';
 
+import "./TabList.scss";
+
 export function TabList(
   props: ComponentProps<"div"> & {
     state?: EditorState | null;

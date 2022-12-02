@@ -6,7 +6,7 @@ import { getAllLabs } from "../../../db/labs/getAllLabs";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { checkSession } from "../../../utils/checkSession";
 
-import Editor from "../../../components/editor/Editor.tsx";
+import { Editor } from "../../../components/editor/Editor";
 
 const labs = await getAllLabs();
 const { id } = Astro.params;
@@ -61,7 +61,7 @@ const quizzes = [
         </p>
         <Quizzes quizzes={quizzes} client:load />
       </div>
-      <Editor value={`const x = "Hello There";\nconsole.log(x)`} client:only="solid" />
+      <Editor value={`const x = "Hello There";\nconsole.log(x)`} client:load />
       <!-- src="https://www.securityknowledgeframework.org/" -->
       <iframe
         src={`/lab-sandbox-sample/?lab=${name}`}
@@ -111,10 +111,9 @@ const quizzes = [
 
   main {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     height: 100%;
     overflow-y: hidden;
-    gap: 2rem;
   }
 
   main > * {

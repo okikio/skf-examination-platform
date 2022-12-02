@@ -12,6 +12,10 @@ specifiers:
   '@codemirror/theme-one-dark': ^6.1.0
   '@codemirror/view': ^6.6.0
   '@ddietr/codemirror-themes': ^1.3.0
+  '@fontsource/electrolize': ^4.5.8
+  '@fontsource/lexend-deca': ^4.5.12
+  '@fontsource/manrope': ^4.5.12
+  '@fontsource/open-sans': ^4.5.13
   '@iconify-json/fluent': ^1.1.17
   '@iconify-json/fluent-emoji': ^1.1.7
   '@solid-primitives/refs': ^0.3.4
@@ -52,6 +56,10 @@ dependencies:
   '@codemirror/theme-one-dark': 6.1.0
   '@codemirror/view': 6.6.0
   '@ddietr/codemirror-themes': 1.3.0
+  '@fontsource/electrolize': 4.5.8
+  '@fontsource/lexend-deca': 4.5.12
+  '@fontsource/manrope': 4.5.12
+  '@fontsource/open-sans': 4.5.13
   '@solid-primitives/refs': 0.3.4_solid-js@1.6.2
   '@supabase/auth-helpers-shared': 0.2.3_m57u6a6l34vkx3j4pjzwywi7ua
   '@supabase/supabase-js': 2.1.1
@@ -654,6 +662,22 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@fontsource/electrolize/4.5.8:
+    resolution: {integrity: sha512-ZMH4brQsd4ZwwcbEa/pU7YPnzdXIaBYJwie52tCGi5rEMVZ+Lg00ZFBSOKK00BDtHbMoa6/MosL7Kg+remNeZw==}
+    dev: false
+
+  /@fontsource/lexend-deca/4.5.12:
+    resolution: {integrity: sha512-s2YGWrMlrthMU0zV9JlB1a/Bjy6C8cWXJYkz0KTmNO3rN3LOYwm4H4bLFRkZaqw+LoNrivm8uMS0AtdmDTp6xg==}
+    dev: false
+
+  /@fontsource/manrope/4.5.12:
+    resolution: {integrity: sha512-s2G9tvaG8+p4OcxbYH9KS7JpgC+Tz2q7GNJLdKQJ/L2DrQZs6e0ARDhcA3KTTU/sVIE6MRfNPXvds8DNoQgEZw==}
+    dev: false
+
+  /@fontsource/open-sans/4.5.13:
+    resolution: {integrity: sha512-/UzqP7ZFk145XAq8KG4pvFPP7UQhtreDGXgqXZjagCDreKxcrhwn/x7DYz9rPcycWkLUVApIybcoczGZiM0cRg==}
+    dev: false
 
   /@humanwhocodes/config-array/0.11.7:
     resolution: {integrity: sha512-kBbPWzN8oVMLb0hOUYXhmxggL/1cJE6ydvjDIGi9EnAGUyA7cLVKQg+d/Dsm+KZwx2czGHrCmMVLiyg8s5JPKw==}
