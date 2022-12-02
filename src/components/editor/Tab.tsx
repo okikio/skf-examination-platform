@@ -1,9 +1,8 @@
 import clsx from "clsx";
 import type { ComponentProps } from "solid-js";
-import type { createTabList } from "../utils/tabs";
+import type { createTabList } from "./utils/tabs";
 import { Button } from "./Button";
 
-import IconFluentAdd24Filled from "~icons/fluent/add24-filled";
 import IconFluentDismiss24Filled from "~icons/fluent/dismiss24-filled";
 import FluentEmojiAdmissionTickets from "~icons/fluent-emoji/admission-tickets";
 
@@ -14,14 +13,11 @@ export interface TabProps {
   tabsListState: ReturnType<typeof createTabList>;
 }
 
-export function Tab(props: ComponentProps<'div'> & TabProps) {
-  const [tabs, { setActive, removeTab, setState: setTabState }] = props.tabsListState;
+export function Tab(props: ComponentProps<"div"> & TabProps) {
+  const [tabs, { setActive, removeTab }] = props.tabsListState;
   return (
     <Button
-      class={clsx(
-        "tab",
-        { active: tabs.active == props.index }
-      )}
+      class={clsx("tab", { active: tabs.active == props.index })}
       onClick={() => {
         setActive(props.index);
       }}

@@ -6,18 +6,18 @@ import svelte from "@astrojs/svelte";
 import solidjs from "@astrojs/solid-js";
 import tailwind from "@astrojs/tailwind";
 
-import Icons from 'unplugin-icons/vite';
-import IconsResolver from 'unplugin-icons/resolver';
-import AutoImport from 'unplugin-auto-import/vite';
+import Icons from "unplugin-icons/vite";
+import IconsResolver from "unplugin-icons/resolver";
+import AutoImport from "unplugin-auto-import/vite";
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     svelte(),
-    solidjs(), 
-    tailwind({ 
-      config: { applyBaseStyles: false }, 
-    })
+    solidjs(),
+    tailwind({
+      config: { applyBaseStyles: false },
+    }),
   ],
   output: "server",
   adapter: node({
@@ -32,17 +32,23 @@ export default defineConfig({
       AutoImport({
         resolvers: [
           IconsResolver({
-            prefix: 'Icon',
-            extension: 'jsx',
-            enabledCollections: ['mdi', 'material-symbols', 'ic', 'fluent-emoji', 'fluent']
+            prefix: "Icon",
+            extension: "jsx",
+            enabledCollections: [
+              "mdi",
+              "material-symbols",
+              "ic",
+              "fluent-emoji",
+              "fluent",
+            ],
           }),
         ],
       }),
       Icons({
         // experimental
         autoInstall: true,
-        compiler: 'solid',
+        compiler: "solid",
       }),
-    ]
-  }
+    ],
+  },
 });

@@ -1,5 +1,5 @@
 import type { LanguageSupport } from "@codemirror/language";
-import type { ChangeSpec, Transaction, TransactionSpec } from "@codemirror/state";
+import type { Transaction } from "@codemirror/state";
 import type { EditorState } from "@codemirror/state";
 
 export interface IModel {
@@ -7,7 +7,7 @@ export interface IModel {
   value: string;
   state?: EditorState | null;
   transactions: Transaction[];
-  lang: LanguageSupport
+  lang: LanguageSupport;
 }
 
 export function createModel(
@@ -21,6 +21,6 @@ export function createModel(
     value,
     state,
     transactions: [],
-    lang
+    lang,
   };
 }

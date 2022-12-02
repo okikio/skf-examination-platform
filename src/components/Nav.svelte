@@ -46,7 +46,12 @@
       on:click={toggleMenu}
       on:keypress={(e) => e.key === "Enter" && toggleMenu()}
     >
-      <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M17.754 14a2.249 2.249 0 0 1 2.249 2.25v.918a2.75 2.75 0 0 1-.513 1.598c-1.545 2.164-4.07 3.235-7.49 3.235c-3.421 0-5.944-1.072-7.486-3.236a2.75 2.75 0 0 1-.51-1.596v-.92A2.249 2.249 0 0 1 6.251 14h11.502ZM12 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10Z"></path></svg>
+      <svg width="1em" height="1em" viewBox="0 0 24 24"
+        ><path
+          fill="currentColor"
+          d="M17.754 14a2.249 2.249 0 0 1 2.249 2.25v.918a2.75 2.75 0 0 1-.513 1.598c-1.545 2.164-4.07 3.235-7.49 3.235c-3.421 0-5.944-1.072-7.486-3.236a2.75 2.75 0 0 1-.51-1.596v-.92A2.249 2.249 0 0 1 6.251 14h11.502ZM12 2.005a5 5 0 1 1 0 10a5 5 0 0 1 0-10Z"
+        /></svg
+      >
     </li>
   {:else}
     <li>
@@ -90,7 +95,6 @@
     background-color: white;
     color: var(--primary-500);
     @apply rounded;
-
   }
 
   .toggle {
@@ -99,7 +103,7 @@
     @apply w-12 h-12;
     @apply flex items-center justify-center;
     @apply rounded-full;
-    
+
     &:hover {
       @apply bg-white;
       color: var(--primary-500);

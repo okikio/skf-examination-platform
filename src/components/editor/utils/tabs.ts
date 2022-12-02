@@ -11,7 +11,7 @@ export type TabListState = {
 export type TabListValue = ReturnType<typeof createTabList>;
 
 export function createTabList(props: Partial<TabListState> = {}) {
-  const initialValue = props.initialValue ?? `console.log("Initial State")`
+  const initialValue = props.initialValue ?? `console.log("Initial State")`;
   const defaultState: TabListState = {
     initialValue: initialValue,
     list: [
@@ -22,14 +22,15 @@ export function createTabList(props: Partial<TabListState> = {}) {
           typescript: true,
         }),
         "./test.ts"
-      )],
+      ),
+    ],
     active: 0,
   };
 
   const [state, setState] = createStore<TabListState>({
     list: props.list ?? defaultState.list,
     active: props.active ?? defaultState.active,
-    initialValue: initialValue
+    initialValue: initialValue,
   });
 
   const addTab = (model: IModel) => setState("list", [...state.list, model]);
@@ -38,7 +39,7 @@ export function createTabList(props: Partial<TabListState> = {}) {
       ...state.list.slice(0, index),
       ...state.list.slice(index + 1),
     ]);
-  }
+  };
   const setActive = (index: number) => setState("active", index);
   return [state, { addTab, removeTab, setActive, setState }] as const;
 }

@@ -1,18 +1,10 @@
 import type { ComponentProps } from "solid-js";
-import {
-  createEffect,
-  splitProps,
-  createSignal,
-  mergeProps,
-  on,
-  onMount,
-} from "solid-js";
+import { createEffect, splitProps, on } from "solid-js";
 
 import type { CodeMirrorProps } from "./utils/codemirror";
 import { createCodeMirror } from "./utils/codemirror";
 
 import { basicSetup, EditorView } from "codemirror";
-import { javascript } from "@codemirror/lang-javascript";
 
 import { TabList } from "./TabList";
 
@@ -20,14 +12,8 @@ import { mergeRefs } from "@solid-primitives/refs";
 
 import { createTabList } from "./utils/tabs";
 
-import { githubLight } from "@ddietr/codemirror-themes/github-light";
 import { githubDark, config } from "@ddietr/codemirror-themes/github-dark";
-import { oneDark } from "@codemirror/theme-one-dark";
 
-import { StateEffect } from "@codemirror/state";
-import { ChangeSet } from "@codemirror/state";
-import { Text } from "@codemirror/state";
-import { createStore } from "solid-js/store";
 import { EditorState } from "@codemirror/state";
 
 import "./Editor.scss";
@@ -45,7 +31,6 @@ export function Editor(props: ComponentProps<"div"> & CodeMirrorProps) {
   });
   const [tabs, { setState: setTabState }] = tabsListState;
 
-  const initialValue = codemirrorProps.value;
   const { createExtension, getState, getView } = createCodeMirror(
     codemirrorProps,
     () => ref
@@ -80,7 +65,7 @@ export function Editor(props: ComponentProps<"div"> & CodeMirrorProps) {
               updateExt.extension,
             ],
           });
-          
+
           setTabState("list", tabs.active, "state", state);
         }
 

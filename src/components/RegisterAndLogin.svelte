@@ -265,7 +265,6 @@
     background-color: #db4437;
   }
 
-
   .sign-in {
     display: flex;
     flex-direction: row;

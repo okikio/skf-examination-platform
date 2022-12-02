@@ -1,4 +1,11 @@
-import { type Accessor, onCleanup, onMount, on, createEffect, createSignal } from "solid-js";
+import {
+  type Accessor,
+  onCleanup,
+  onMount,
+  on,
+  createEffect,
+  createSignal,
+} from "solid-js";
 import { EditorView } from "@codemirror/view";
 import {
   Compartment,
@@ -34,12 +41,14 @@ export function createCodeMirror(
 ) {
   const [getValue, setValue] = createSignal(props.value);
   const [getView, setView] = createSignal<EditorView | null | undefined>(null);
-  const [getState, setState] = createSignal<EditorState | null | undefined>(null);
+  const [getState, setState] = createSignal<EditorState | null | undefined>(
+    null
+  );
 
   onMount(() => {
     setView(
       new EditorView({
-        parent: ref()
+        parent: ref(),
       })
     );
 
@@ -73,7 +82,7 @@ export function createCodeMirror(
   createEffect(
     on(
       () => getView()?.state,
-      (val) => {
+      () => {
         const view = getView();
         if (!view) return;
         setState(view.state);
@@ -117,5 +126,13 @@ export function createCodeMirror(
     return { compartment, reconfigure, extension };
   }
 
-  return { createExtension, getState, setState, getValue, setValue, getView, setView };
+  return {
+    createExtension,
+    getState,
+    setState,
+    getValue,
+    setValue,
+    getView,
+    setView,
+  };
 }

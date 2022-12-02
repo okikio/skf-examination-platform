@@ -1,13 +1,13 @@
-@import '@acab/reset.css';
+@import "@acab/reset.css";
 
-@import '@fontsource/manrope';
-@import '@fontsource/lexend-deca';
-@import '@fontsource/electrolize';
+@import "@fontsource/manrope";
+@import "@fontsource/lexend-deca";
+@import "@fontsource/electrolize";
 
-@import '@fontsource/open-sans';
-@import '@fontsource/open-sans/800';
-@import '@fontsource/open-sans/700';
-@import '@fontsource/open-sans/600';
+@import "@fontsource/open-sans";
+@import "@fontsource/open-sans/800";
+@import "@fontsource/open-sans/700";
+@import "@fontsource/open-sans/600";
 
 @tailwind base;
 @tailwind components;

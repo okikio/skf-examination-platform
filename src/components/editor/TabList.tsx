@@ -10,7 +10,7 @@ import { Tab } from "./Tab";
 
 import { createModel } from "./utils/model";
 
-import FluentAdd24Regular from '~icons/fluent/add-24-regular';
+import FluentAdd24Regular from "~icons/fluent/add-24-regular";
 
 import "./TabList.scss";
 
@@ -18,9 +18,9 @@ export function TabList(
   props: ComponentProps<"div"> & {
     state?: EditorState | null;
     tabsListState: ReturnType<typeof createTabList>;
-  } 
+  }
 ) {
-  const [tabs, { addTab, setActive }] = props?.tabsListState;
+  const [tabs, { addTab, setActive }] = props.tabsListState;
   return (
     <div class="tab-bar">
       <div class="tab-list">
