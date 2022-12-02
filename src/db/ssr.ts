@@ -6,10 +6,11 @@ import {
 import type { AstroGlobal, APIContext } from "astro";
 
 const supabaseUrl = "https://ccsgfooankckfqpmcfyb.supabase.co";
-const supabaseKey = (await getApiKey()) || "";
 
-export const supabaseSSR = (context: APIContext | AstroGlobal) =>
-  createServerSupabaseClient(supabaseUrl, supabaseKey, context);
+export const supabaseSSR = async (context: APIContext | AstroGlobal) => {
+  const supabaseKey = (await getApiKey()) || "";
+  return createServerSupabaseClient(supabaseUrl, supabaseKey, context);
+};
 
 function createServerSupabaseClient(
   supabaseUrl: string,

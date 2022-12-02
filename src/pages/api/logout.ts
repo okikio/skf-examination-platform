@@ -3,7 +3,7 @@ import { supabaseSSR } from "../../db/ssr";
 
 export const post: APIRoute = async (context) => {
   let res;
-  const { error } = await supabaseSSR(context).auth.signOut();
+  const { error } = await (await supabaseSSR(context)).auth.signOut();
 
   if (error) {
     console.error(error);

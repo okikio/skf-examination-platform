@@ -7,7 +7,9 @@ export const post: APIRoute = async (context) => {
 
   let res;
 
-  const { data, error } = await supabaseSSR(context).auth.signInWithPassword({
+  const { data, error } = await (
+    await supabaseSSR(context)
+  ).auth.signInWithPassword({
     email,
     password,
   });
