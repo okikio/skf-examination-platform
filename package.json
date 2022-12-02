@@ -66,6 +66,7 @@
     "prettier-plugin-astro": "^0.7.0",
     "prettier-plugin-svelte": "^2.8.1",
     "sass": "^1.56.1",
+    "tsm": "^2.3.0",
     "unplugin-auto-import": "^0.12.0",
     "unplugin-icons": "^0.14.14"
   }
