@@ -14,28 +14,43 @@ import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [svelte(), solidjs(), tailwind({
-    config: {
-      applyBaseStyles: false
-    }
-  })],
+  integrations: [
+    svelte(),
+    solidjs(),
+    tailwind({
+      config: {
+        applyBaseStyles: false,
+      },
+    }),
+  ],
   output: "server",
   adapter: vercel(),
   vite: {
     optimizeDeps: {
       // Add both @codemirror/state and @codemirror/view to included deps for optimization
-      include: ["@codemirror/state", "@codemirror/view"]
+      include: ["@codemirror/state", "@codemirror/view"],
     },
-    plugins: [AutoImport({
-      resolvers: [IconsResolver({
-        prefix: "Icon",
-        extension: "jsx",
-        enabledCollections: ["mdi", "material-symbols", "ic", "fluent-emoji", "fluent"]
-      })]
-    }), Icons({
-      // experimental
-      autoInstall: true,
-      compiler: "solid"
-    })]
-  }
+    plugins: [
+      AutoImport({
+        resolvers: [
+          IconsResolver({
+            prefix: "Icon",
+            extension: "jsx",
+            enabledCollections: [
+              "mdi",
+              "material-symbols",
+              "ic",
+              "fluent-emoji",
+              "fluent",
+            ],
+          }),
+        ],
+      }),
+      Icons({
+        // experimental
+        autoInstall: true,
+        compiler: "solid",
+      }),
+    ],
+  },
 });
