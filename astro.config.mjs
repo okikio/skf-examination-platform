@@ -31,9 +31,12 @@ export default defineConfig({
     dist: new URL("./dist/", import.meta.url),
   }),
   vite: {
+    // build: {
+    //   rollupOptions: { external: ["@ddietr/codemirror-themes"] }
+    // },
     optimizeDeps: {
       // Add both @codemirror/state and @codemirror/view to included deps for optimization
-      include: ["@codemirror/state", "@codemirror/view"],
+      include: ["@codemirror/state", "@codemirror/view", "@ddietr/codemirror-themes", "@codemirror/language", "@lezer/highlight"],
     },
     plugins: [
       AutoImport({
