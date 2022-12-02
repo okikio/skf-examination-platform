@@ -3,3 +3,5 @@
 [build]
   command = 'npx pnpm install --store=node_modules/.pnpm-store && npm run build'
   publish = 'dist'
+[functions]
+  external_node_modules = ["astro"]
