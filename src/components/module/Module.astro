@@ -112,9 +112,9 @@ const { certificate, labs } = Astro.props;
   }
 
   main {
-    display: flex;
-    justify-content: space-between;
-    gap: 4rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    justify-items: end;
   }
 
   main .content {
@@ -138,6 +138,11 @@ const { certificate, labs } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .summary ul li:first-of-type {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
   }
 
   .summary li {
