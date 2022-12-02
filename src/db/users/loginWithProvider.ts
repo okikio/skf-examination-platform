@@ -2,7 +2,9 @@ import type { Provider } from "@supabase/supabase-js";
 import { supabase } from "../client";
 
 export async function loginWithProvider(provider: Provider) {
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { data, error } = await (
+    await supabase()
+  ).auth.signInWithOAuth({
     provider,
   });
 

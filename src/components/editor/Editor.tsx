@@ -12,7 +12,10 @@ import { mergeRefs } from "@solid-primitives/refs";
 
 import { createTabList } from "./utils/tabs";
 
-import { githubDark, config } from "@ddietr/codemirror-themes/github-dark";
+import {
+  githubDark,
+  config,
+} from "@ddietr/codemirror-themes/theme/github-dark";
 
 import { EditorState } from "@codemirror/state";
 

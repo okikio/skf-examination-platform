@@ -12,7 +12,7 @@ export async function getUserDataSSR(context: APIContext | AstroGlobal) {
 }
 
 async function _getUserData(context?: APIContext | AstroGlobal) {
-  const supabase = getSupabase(context);
+  const supabase = await getSupabase(context);
 
   const { data, error } = await supabase.auth.getUser();
 

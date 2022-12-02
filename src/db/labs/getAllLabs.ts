@@ -25,7 +25,7 @@ async function _getAllLabs(
     return labs;
   }
 
-  const supabase = getSupabase(context);
+  const supabase = await getSupabase(context);
 
   const { data, error } = await supabase.from("labs").select("*");
 
