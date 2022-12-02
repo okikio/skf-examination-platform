@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 
 // https://astro.build/config
-import node from "@astrojs/node";
+// import node from "@astrojs/node";
 import svelte from "@astrojs/svelte";
 import solidjs from "@astrojs/solid-js";
 import tailwind from "@astrojs/tailwind";
@@ -10,7 +10,10 @@ import IconsResolver from "unplugin-icons/resolver";
 import AutoImport from "unplugin-auto-import/vite";
 
 // https://astro.build/config
-import vercel from "@astrojs/vercel/serverless";
+// import vercel from "@astrojs/vercel/serverless";
+
+// https://astro.build/config
+import netlify from "@astrojs/netlify/functions";
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,7 +27,7 @@ export default defineConfig({
     }),
   ],
   output: "server",
-  adapter: vercel(),
+  adapter: netlify(),
   vite: {
     optimizeDeps: {
       // Add both @codemirror/state and @codemirror/view to included deps for optimization
