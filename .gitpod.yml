@@ -1,3 +1,4 @@
+
 image:
   file: .gitpod.Dockerfile
 
@@ -34,3 +35,6 @@ tasks:
     command: >
       nvm install &&
       npm install -g pnpm
+vscode:
+  extensions:
+    - astro-build.astro-vscode
