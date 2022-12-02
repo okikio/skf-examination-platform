@@ -6,6 +6,8 @@ import { getAllLabs } from "../../../db/labs/getAllLabs";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { checkSession } from "../../../utils/checkSession";
 
+import Editor from "../../../components/editor/Editor.tsx";
+
 const labs = await getAllLabs();
 const { id } = Astro.params;
 const lab = labs.find((lab) => lab.id == id);
@@ -59,6 +61,7 @@ const quizzes = [
         </p>
         <Quizzes quizzes={quizzes} client:load />
       </div>
+      <Editor value={`const x = "Hello There";\nconsole.log(x)`} client:only="solid" />
       <!-- src="https://www.securityknowledgeframework.org/" -->
       <iframe
         src={`/lab-sandbox-sample/?lab=${name}`}
