@@ -36,7 +36,13 @@ export default defineConfig({
     // },
     optimizeDeps: {
       // Add both @codemirror/state and @codemirror/view to included deps for optimization
-      include: ["@codemirror/state", "@codemirror/view", "@ddietr/codemirror-themes", "@codemirror/language", "@lezer/highlight"],
+      include: [
+        "@codemirror/state",
+        "@codemirror/view",
+        "@ddietr/codemirror-themes",
+        "@codemirror/language",
+        "@lezer/highlight",
+      ],
     },
     plugins: [
       AutoImport({
