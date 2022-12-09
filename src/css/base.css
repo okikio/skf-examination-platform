@@ -1,37 +1,9 @@
-@font-face {
-  font-family: "Electrolize";
-  src: url("/fonts/Electrolize-Regular.ttf");
-  font-weight: 400;
-  font-display: swap;
-}
+@import "@fontsource/electrolize";
 
-@font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/OpenSans-ExtraBold.ttf");
-  font-weight: 800;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/OpenSans-Bold.ttf");
-  font-weight: 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/OpenSans-SemiBold.ttf");
-  font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Open Sans";
-  src: url("/fonts/OpenSans-Regular.ttf");
-  font-weight: 400;
-  font-display: swap;
-}
+@import "@fontsource/open-sans/800";
+@import "@fontsource/open-sans/700";
+@import "@fontsource/open-sans/600";
+@import "@fontsource/open-sans";
 
 * {
   box-sizing: border-box;
