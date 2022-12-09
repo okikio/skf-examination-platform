@@ -1,9 +1,6 @@
+@import "@fontsource/manrope";
+@import "@fontsource/lexend-deca";
 @import "@fontsource/electrolize";
-
-@import "@fontsource/open-sans/800";
-@import "@fontsource/open-sans/700";
-@import "@fontsource/open-sans/600";
-@import "@fontsource/open-sans";
 
 * {
   box-sizing: border-box;
@@ -79,8 +76,8 @@ img {
     var(--secondary-500) 31.48%
   );
 
-  --font-heading: "Open Sans", serif;
-  --font-body: "Open Sans", sans-serif;
+  --font-heading: "Lexend Deca", serif;
+  --font-body: "Manrope", sans-serif;
   --font-decoration: "Electrolize", sans-serif;
   --section-padding: 3em;
 }
