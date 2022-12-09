@@ -23,8 +23,6 @@
     "@astrojs/node": "^3.1.0",
     "@astrojs/svelte": "^1.0.2",
     "@fontsource/electrolize": "^4.5.8",
-    "@fontsource/lexend-deca": "^4.5.12",
-    "@fontsource/manrope": "^4.5.12",
     "@fontsource/open-sans": "^4.5.13",
     "@supabase/auth-helpers-shared": "^0.2.3",
     "@supabase/supabase-js": "^2.1.1",
