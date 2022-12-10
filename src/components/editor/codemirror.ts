@@ -18,10 +18,10 @@ export function createExtension(
    * Reconfigures the extension compartment with the given extension.
    * @param extension the extension to reconfigure the extension compartment with.
    */
-  function reconfigure(extension: Extension | Extension[], ecitorView = view) {
-    if (!ecitorView) return;
+  function reconfigure(extension: Extension | Extension[], editorView = view) {
+    if (!editorView) return;
 
-    ecitorView.dispatch({
+    editorView.dispatch({
       effects: compartment.reconfigure(extension),
     });
   }
