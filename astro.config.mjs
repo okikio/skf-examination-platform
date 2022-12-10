@@ -7,8 +7,6 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 import Icons from "unplugin-icons/vite";
-import IconsResolver from "unplugin-icons/resolver";
-import AutoImport from "unplugin-auto-import/vite";
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,15 +21,6 @@ export default defineConfig({
       include: ["@codemirror/state", "@codemirror/view"]
     },
     plugins: [
-      AutoImport({
-        resolvers: [
-          IconsResolver({
-            prefix: "Icon",
-            extension: "svelte",
-            enabledCollections: ["mdi", "material-symbols", "ic", "fluent-emoji", "fluent"]
-          })
-        ]
-      }),
       Icons({
         // experimental
         autoInstall: true,
