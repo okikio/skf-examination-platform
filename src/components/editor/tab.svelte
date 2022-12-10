@@ -50,3 +50,9 @@
     </button>
   </div>
 </button>
+
+<style>
+  .tab.active {
+    background-color: aqua;
+  }
+</style>

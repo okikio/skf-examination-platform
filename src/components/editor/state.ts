@@ -5,20 +5,21 @@ import { createModel, type IModel } from "./model";
 
 export const initialValue = `const x = "Hello There";\nconsole.log(x)`;
 
+const initialModel = createModel(
+  initialValue,
+  javascript({
+    jsx: true,
+    typescript: true,
+  }),
+  "./test.ts"
+)
 export const tablist = writable([
-  createModel(
-    initialValue,
-    javascript({
-      jsx: true,
-      typescript: true,
-    }),
-    "./test.ts"
-  )
+  initialModel
 ]);
 
 export let activeTabId = writable(0);
-export let activeTab = derived([tablist, activeTabId], ([$tablist, $activeId]) => $tablist[$activeId]);
-export let length = derived(tablist, ($tablist) => $tablist.length);
+export let activeTab = derived([tablist, activeTabId], ([$tablist, $activeId]) => $tablist[$activeId], initialModel);
+export let length = derived([tablist], ([$tablist]) => $tablist.length, 1);
 
 export const addTab = (model: IModel) => tablist.update(n => {
   n.push(model);
