@@ -1,16 +1,14 @@
 <script lang="ts">
   import type { EditorState } from "@codemirror/state";
 
+  import FluentAdd24Regular from "~icons/fluent/add-24-regular";
+
   import { addTab, tablist, setActive, length } from "./state";
   import { javascript } from "@codemirror/lang-javascript";
 
   import { createModel } from "./model";
   
   import Tab from "./tab.svelte";
-
-  // import FluentAdd24Regular from "~icons/fluent/add-24-regular";
-
-
 </script>
 
 
@@ -41,7 +39,7 @@
       setActive($length - 1);
     }}
   >
-    <!-- <FluentAdd24Regular /> -->
-    Add
+    <FluentAdd24Regular />
+    <!-- Add -->
   </button>
 </div>

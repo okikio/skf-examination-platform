@@ -14,9 +14,6 @@
 
   import Tabs from "./tabs.svelte";
 
-  // import { createTabList } from "../utils/tabs";
-  // import { TabList } from "./TabList";
-
   let ref: HTMLDivElement | undefined;
   let view: EditorView | undefined;
 
