@@ -20,7 +20,7 @@
   const basicExt = createExtension(basicSetup, view);
   const updateExt = createExtension(
     EditorView.updateListener.of((update) => {
-      if ($activeTab.state) {
+      if ($activeTab?.state) {
         $tablist[$activeTabId].state = update.state;
       }
     }),
@@ -28,8 +28,8 @@
   );
 
   $: {
-    if (view) {
-      if (!$activeTab.state) {
+    if (view && $activeTab) {
+      if (!$activeTab?.state) {
         const state = EditorState.create({
           doc: $activeTab.value,
           extensions: [
@@ -43,7 +43,7 @@
         $tablist[$activeTabId].state = state;
       }
 
-      if ($activeTab.state) {
+      if ($activeTab?.state) {
         view.setState($activeTab.state);
       }
     }
