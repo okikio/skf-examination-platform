@@ -4,7 +4,6 @@
 
   import { tablist, activeTab, activeTabId } from "./state";
 
-  import { javascript } from "@codemirror/lang-javascript";
   import { oneDark, color } from "@codemirror/theme-one-dark";
 
   import { EditorState } from "@codemirror/state";
@@ -43,7 +42,7 @@
 
         $tablist[$activeTabId].state = state;
       }
-      
+
       if ($activeTab.state) {
         view.setState($activeTab.state);
       }
@@ -70,6 +69,6 @@
   .editor {
     height: 100%;
     line-height: normal;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
   }
 </style>

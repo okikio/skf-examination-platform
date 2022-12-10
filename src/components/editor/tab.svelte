@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { addTab, tablist, setActive, activeTabId, removeTab } from "./state";
+  import { setActive, activeTabId, removeTab } from "./state";
 
   import IconFluentDismiss24Filled from "~icons/fluent/dismiss24-filled";
   import FluentEmojiAdmissionTickets from "~icons/fluent-emoji/admission-tickets";
@@ -15,14 +15,6 @@
     setActive(index);
   }}
 >
-  <!-- 
-    <input
-      type="text"
-      value={props.name}
-      onInput={(e) => setTabState("list", props.index, "url", e.currentTarget.value)}
-    />  
-  -->
-  <!-- <IconFluentEmojiFaceWithTearsOfJoys />  -->
   <FluentEmojiAdmissionTickets />
   <section class="flex-grow">{name}</section>
   <button
@@ -58,6 +50,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
   }
 </style>

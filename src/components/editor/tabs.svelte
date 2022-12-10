@@ -1,23 +1,18 @@
 <script lang="ts">
-  import type { EditorState } from "@codemirror/state";
-
   import FluentAdd24Regular from "~icons/fluent/add-24-regular";
 
   import { addTab, tablist, setActive, length } from "./state";
   import { javascript } from "@codemirror/lang-javascript";
 
   import { createModel } from "./model";
-  
+
   import Tab from "./tab.svelte";
 </script>
 
 <div class="tab-bar">
   <div class="tab-list">
     {#each $tablist as tabvalue, index}
-      <Tab 
-        {index} 
-        name={tabvalue.url.toString()}
-      />
+      <Tab {index} name={tabvalue.url.toString()} />
     {/each}
   </div>
 

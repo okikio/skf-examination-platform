@@ -1,4 +1,4 @@
-import { derived, writable } from 'svelte/store';
+import { derived, writable } from "svelte/store";
 
 import { javascript } from "@codemirror/lang-javascript";
 import { createModel, type IModel } from "./model";
@@ -12,28 +12,27 @@ const initialModel = createModel(
     typescript: true,
   }),
   "./test.ts"
-)
-export const tablist = writable([
+);
+export const tablist = writable([initialModel]);
+
+export const activeTabId = writable(0);
+export const activeTab = derived(
+  [tablist, activeTabId],
+  ([$tablist, $activeId]) => $tablist[$activeId],
   initialModel
-]);
+);
+export const length = derived([tablist], ([$tablist]) => $tablist.length, 1);
 
-export let activeTabId = writable(0);
-export let activeTab = derived([tablist, activeTabId], ([$tablist, $activeId]) => $tablist[$activeId], initialModel);
-export let length = derived([tablist], ([$tablist]) => $tablist.length, 1);
-
-export const addTab = (model: IModel) => tablist.update(n => {
-  n.push(model);
-  return n;
-});
+export const addTab = (model: IModel) =>
+  tablist.update((n) => {
+    n.push(model);
+    return n;
+  });
 
 export const removeTab = (index: number) => {
-  return tablist.update(n => {
+  return tablist.update((n) => {
     n.splice(index, 1);
     return n;
-    // return [
-    //   ...n.slice(0, index),
-    //   ...n.slice(index + 1),
-    // ]
   });
 };
 

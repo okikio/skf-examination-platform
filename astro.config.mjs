@@ -18,14 +18,14 @@ export default defineConfig({
   vite: {
     optimizeDeps: {
       // Add both @codemirror/state and @codemirror/view to included deps for optimization
-      include: ["@codemirror/state", "@codemirror/view"]
+      include: ["@codemirror/state", "@codemirror/view"],
     },
     plugins: [
       Icons({
         // experimental
         autoInstall: true,
-        compiler: "svelte"
-      })
-    ]
-  }
+        compiler: "svelte",
+      }),
+    ],
+  },
 });

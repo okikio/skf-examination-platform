@@ -8,7 +8,10 @@ import { Compartment } from "@codemirror/state";
  * See {@link https://codemirror.net/examples/config/| CodeMirror Configuration} and {@link https://codemirror.net/docs/ref/#state.Compartment| Compartment} for details on editor configuration.
  * @param extension the extension to append
  */
-export function createExtension(extension: Extension | Extension[], view?: EditorView) {
+export function createExtension(
+  extension: Extension | Extension[],
+  view?: EditorView
+) {
   const compartment = new Compartment();
 
   /**
