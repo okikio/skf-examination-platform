@@ -15,32 +15,49 @@
     setActive(index);
   }}
 >
-  <div>
-    <!-- 
-      <input
-        type="text"
-        value={props.name}
-        onInput={(e) => setTabState("list", props.index, "url", e.currentTarget.value)}
-      />  
-    -->
-    <!-- <IconFluentEmojiFaceWithTearsOfJoys />  -->
-    <FluentEmojiAdmissionTickets />
-    <section class="flex-grow">{name}</section>
-    <button
-      class="close-tab-btn"
-      type="button"
-      title="Close"
-      on:click={() => {
-        removeTab(index);
-      }}
-    >
-      <IconFluentDismiss24Filled />
-    </button>
-  </div>
+  <!-- 
+    <input
+      type="text"
+      value={props.name}
+      onInput={(e) => setTabState("list", props.index, "url", e.currentTarget.value)}
+    />  
+  -->
+  <!-- <IconFluentEmojiFaceWithTearsOfJoys />  -->
+  <FluentEmojiAdmissionTickets />
+  <section class="flex-grow">{name}</section>
+  <button
+    class="close-tab-btn"
+    type="button"
+    title="Close"
+    on:click={() => {
+      removeTab(index);
+    }}
+  >
+    <IconFluentDismiss24Filled />
+  </button>
 </button>
 
 <style>
+  .tab {
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
   .tab.active {
     background-color: aqua;
+  }
+
+  .close-tab-btn {
+    padding: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
   }
 </style>

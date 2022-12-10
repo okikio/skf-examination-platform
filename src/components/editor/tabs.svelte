@@ -11,7 +11,6 @@
   import Tab from "./tab.svelte";
 </script>
 
-
 <div class="tab-bar">
   <div class="tab-list">
     {#each $tablist as tabvalue, index}
@@ -40,6 +39,30 @@
     }}
   >
     <FluentAdd24Regular />
-    <!-- Add -->
   </button>
 </div>
+
+<style>
+  .tab-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .tab-list {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .add-tab-btn {
+    padding: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

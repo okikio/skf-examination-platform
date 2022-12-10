@@ -5,7 +5,7 @@
   import { tablist, activeTab, activeTabId } from "./state";
 
   import { javascript } from "@codemirror/lang-javascript";
-  import { oneDark } from "@codemirror/theme-one-dark";
+  import { oneDark, color } from "@codemirror/theme-one-dark";
 
   import { EditorState } from "@codemirror/state";
   import { EditorView } from "@codemirror/view";
@@ -61,7 +61,15 @@
   });
 </script>
 
-<div class="flex flex-col w-full h-full">
+<div class="editor" style:background-color={color.background}>
   <Tabs />
-  <div bind:this={ref} />
+  <div class="codemirror" bind:this={ref} />
 </div>
+
+<style>
+  .editor {
+    height: 100%;
+    line-height: normal;
+    font-family: 'Courier New', Courier, monospace;
+  }
+</style>
