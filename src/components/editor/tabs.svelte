@@ -7,12 +7,13 @@
   import { createModel } from "./model";
 
   import Tab from "./tab.svelte";
+  export let updateView: () => void;
 </script>
 
 <div class="tab-bar">
   <div class="tab-list">
     {#each $tablist as tabvalue, index}
-      <Tab {index} name={tabvalue.url.toString()} />
+      <Tab {index} name={tabvalue.url.toString()} {updateView} />
     {/each}
   </div>
 
@@ -31,6 +32,7 @@
 
       addTab(model);
       setActive($length - 1);
+      updateView();
     }}
   >
     <FluentAdd24Regular />

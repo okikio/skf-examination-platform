@@ -27,7 +27,7 @@
     view
   );
 
-  $: {
+  function updateView() {
     if (view && $activeTab) {
       if (!$activeTab?.state) {
         const state = EditorState.create({
@@ -53,6 +53,7 @@
     view = new EditorView({
       parent: ref,
     });
+    updateView();
   });
 
   onDestroy(() => {
@@ -61,7 +62,7 @@
 </script>
 
 <div class="editor" style:background-color={color.background}>
-  <Tabs />
+  <Tabs {updateView} />
   <div class="codemirror" bind:this={ref} />
 </div>
 

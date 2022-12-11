@@ -6,6 +6,7 @@
 
   export let index = 0;
   export let name = "Tab";
+  export let updateView: () => void;
 </script>
 
 <button
@@ -13,6 +14,7 @@
   class:active={$activeTabId == index}
   on:click={() => {
     setActive(index);
+    updateView();
   }}
 >
   <FluentEmojiAdmissionTickets />
@@ -23,6 +25,7 @@
     title="Close"
     on:click={() => {
       removeTab(index);
+      updateView();
     }}
   >
     <IconFluentDismiss24Filled />
