@@ -31,17 +31,12 @@ export const addTab = (model: IModel) =>
 
 export const removeTab = (index: number) => {
   return tablist.update((n) => {
-    console.log({ n, index })
     if (get(activeTabId) == index) {
       activeTabId.set(index - 1);
 
     }
     n.splice(index, 1);
     return n;
-    // return [
-    //   ...n.slice(0, index),
-    //   ...n.slice(index + 1),
-    // ];
   });
 };
 
