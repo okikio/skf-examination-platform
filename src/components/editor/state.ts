@@ -33,7 +33,6 @@ export const removeTab = (index: number) => {
   return tablist.update((n) => {
     if (get(activeTabId) == index) {
       activeTabId.set(index - 1);
-
     }
     n.splice(index, 1);
     return n;
