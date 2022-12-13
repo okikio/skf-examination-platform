@@ -1,9 +1,6 @@
 import { defineConfig } from "astro/config";
-// https://astro.build/config
 import svelte from "@astrojs/svelte";
-
-// https://astro.build/config
-import node from "@astrojs/node";
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 import Icons from "unplugin-icons/vite";
@@ -12,9 +9,7 @@ import Icons from "unplugin-icons/vite";
 export default defineConfig({
   integrations: [svelte()],
   output: "server",
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: vercel(),
   vite: {
     optimizeDeps: {
       // Add both @codemirror/state and @codemirror/view to included deps for optimization
