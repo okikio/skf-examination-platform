@@ -22,6 +22,8 @@
   "dependencies": {
     "@astrojs/svelte": "^1.0.2",
     "@astrojs/vercel": "^2.3.6",
+    "@fontsource/electrolize": "^4.5.8",
+    "@fontsource/open-sans": "^4.5.13",
     "@supabase/auth-helpers-shared": "^0.2.3",
     "@supabase/supabase-js": "^2.1.1",
     "astro": "^1.6.11",
