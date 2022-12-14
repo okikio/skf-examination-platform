@@ -133,14 +133,14 @@ const isLoggedin = await checkSession(Astro);
     margin-right: 1rem;
   }
 
-  h1,
-  h2 {
+  .wrapper h1,
+  .wrapper h2 {
     text-align: left;
     font-weight: 700;
     margin-bottom: 1rem;
   }
 
-  main {
+  .wrapper main {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -151,12 +151,12 @@ const isLoggedin = await checkSession(Astro);
     padding: 2em;
   }
 
-  h1 {
+  .wrapper h1 {
     font-size: 1.5rem;
     font-weight: 600;
   }
 
-  input {
+  .wrapper input {
     border: 1px solid #515594;
     border-radius: 0.5rem;
     padding: 0.5rem 0.75rem;
@@ -164,12 +164,12 @@ const isLoggedin = await checkSession(Astro);
     max-width: 20rem;
   }
 
-  .form {
+  .wrapper .form {
     display: flex;
     gap: 1rem;
   }
 
-  button {
+  .wrapper button {
     border: 1px solid #515594;
     border-radius: 0.5rem;
     padding: 0.5rem 0.75rem;
