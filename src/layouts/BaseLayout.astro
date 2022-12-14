@@ -21,7 +21,7 @@ const { title, loadNav = true, isLoggedin } = Astro.props;
     <link rel="icon" href="/favicon.svg" />
     <title>{title}</title>
   </head>
-  <body>
+  <body class="b">
     <Auth client:load />
     {loadNav && <Nav isLoggedin={isLoggedin} />}
     <slot />
