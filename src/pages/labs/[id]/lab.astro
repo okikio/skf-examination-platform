@@ -11,7 +11,7 @@ import Editor from "../../../components/editor/editor.svelte";
 
 const labs = await getAllLabs();
 const { id } = Astro.params;
-const lab = labs.find((lab) => lab.id == id);
+const lab = labs.find((lab) => lab.id.toString() === id);
 
 const isLoggedin = await checkSession(Astro);
 
@@ -88,6 +88,9 @@ if (md) {
   content = marked.parse(text);
   content = replaceTitle(content);
 }
+
+const showEditor = true;
+const columns = showEditor ? "1fr 1fr 1fr" : "1fr 1fr";
 ---
 
 <BaseLayout
@@ -102,7 +105,7 @@ if (md) {
         <article set:html={content} />
         <Quizzes quizzes={quizzes} client:load />
       </div>
-      <Editor client:load />
+      {showEditor && <Editor client:load />}
       <iframe
         src={`/lab-sandbox-sample/?lab=${name}`}
         width="100%"
@@ -117,6 +120,12 @@ if (md) {
     </footer>
   </div>
 </BaseLayout>
+
+<style define:vars={{ columns }}>
+  .content main {
+    grid-template-columns: var(--columns);
+  }
+</style>
 
 <style>
   :global(html, body) {
