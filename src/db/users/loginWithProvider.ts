@@ -3,7 +3,10 @@ import { supabase } from "../client";
 
 export async function loginWithProvider(provider: Provider) {
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider
+    provider,
+    options: {
+      redirectTo: `${globalThis.location.origin}/`,
+    },
   });
 
   if (error) {
