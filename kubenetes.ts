@@ -36,16 +36,16 @@ import { debounce } from "https://deno.land/x/debounce@v0.0.7/mod.ts";
 import rascal from 'npm:rascal';
 import config from './config.ts';
 
+let labs_protocol: string | undefined;
 let labs_domain = Deno.env.get("SKF_LABS_DOMAIN") ?? "";
+
 const subdomain_deploy = Deno.env.get("SKF_LABS_DEPLOY_MODE") === "subdomain";
 if (subdomain_deploy) {
-  let [labs_protocol, labs_domain] = /(.*:\/\/)?(.*)/.exec(labs_domain);
+  [labs_protocol, labs_domain] = /(.*:\/\/)?(.*)/.exec(labs_domain) ?? [];
   if (!labs_protocol) {
-      labs_protocol = "http://";
+    labs_protocol = "http://";
   }
-  console.log(
-      `Subdomain deploy using ${labs_protocol}<lab>.${labs_domain},`
-  );
+  console.log( `Subdomain deploy using ${labs_protocol}<lab>.${labs_domain},`);
 } else {
   console.log(`Port deploy using ${labs_domain}:<port>`);
 }
@@ -457,7 +457,6 @@ export async function deployContainer(rpc_body: string) {
     }
   }
 
-  let response = await getServiceExposedIP(deployment, user_id)
   if (subdomain_deploy) {
     const hostname = `${deployment}-${user_id}.${labs_domain}`
     const networking_v1_api = new NetworkingV1Api(kubernetes);
@@ -474,25 +473,23 @@ export async function deployContainer(rpc_body: string) {
 
       if (ingress_err) return ingress_err;
       
-      response = labs_protocol + hostname
-      return response
+      return labs_protocol + hostname
     } catch (error) {
-      // const response_ingress = networking_v1_api.list_namespaced_ingress(user_id)
-      // for (const i of response_ingress.items) {
-      //   for (const item of i.spec.rules) {
-      //     host_split = item.host
-      //     host = host_split.split(".")
-      //     domain_user = deployment + "-" + user_id
-      //     if (domain_user == host[0]) {
-      //       response = labs_protocol + hostname
-      //       return response
-      //     }
-      //   }
-
-
+      const response_ingress = await networking_v1_api.namespace(user_id).getIngressList();
+      for (const i of response_ingress.items) {
+        const rules = i?.spec?.rules ?? [];
+        for (const item of rules) {
+          const host_split = item.host ?? "";
+          const host = host_split.split(".")
+          const domain_user = deployment + "-" + user_id
+          if (domain_user == host[0]) {
+            return labs_protocol + hostname
+          }
+        }
     }
   } else {
-    // return getHostPortFromResponse(response)
+    const response = await getServiceExposedIP(deployment, user_id)
+    return await getHostPortFromResponse(response)
   }
 }
 // console.log(podList);
