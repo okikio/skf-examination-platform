@@ -1,5 +1,4 @@
 import { autoDetectClient, Reflector } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
-import { CoordinationV1Api } from "https://deno.land/x/kubernetes_apis@v0.3.2/builtin/coordination.k8s.io@v1/mod.ts";
 import {
   CoreV1Api,
   fromService, toService,
@@ -463,18 +462,20 @@ export async function deployContainer(rpc_body: string) {
 
     try {
       const ingress_err = await createIngress(networking_v1_api, hostname, deployment, service_port, user_id)
-      while (true) {
+
+      let runLoop = true
+      while (runLoop) {
         const test = await waitGetCompletedPodPhase(deployment, user_id)
         if (test === "Running") {
           console.log("Pod has started and is running")
+          runLoop = false;
           break
         }
       }
 
       if (ingress_err) return ingress_err;
-      
       return labs_protocol + hostname
-    } catch (error) {
+    } catch (_error) {
       const response_ingress = await networking_v1_api.namespace(user_id).getIngressList();
       for (const i of response_ingress.items) {
         const rules = i?.spec?.rules ?? [];
@@ -486,6 +487,7 @@ export async function deployContainer(rpc_body: string) {
             return labs_protocol + hostname
           }
         }
+      }
     }
   } else {
     const response = await getServiceExposedIP(deployment, user_id)
