@@ -1,26 +1,84 @@
-export default {
-  "$schema": "./node_modules/rascal/lib/config/schema.json",
+import type { BrokerConfig } from "https://esm.sh/rascal@16.2.0";
+
+export const RABBIT_MQ_CONN_STRING = Deno.env.get("RABBIT_MQ_CONN_STRING") || 'localhost';
+export const RABBITMQ_DEFAULT_USER = Deno.env.get("RABBITMQ_DEFAULT_USER") || 'guest';
+export const RABBITMQ_DEFAULT_PASS = Deno.env.get("RABBITMQ_DEFAULT_PASS") || 'guest';
+
+export const config: BrokerConfig = {
+  // "$schema": "./node_modules/rascal/lib/config/schema.json",
   "vhosts": {
     "/": {
       "connection": {
         // user:password@broker.example.com
-        "url": "amqp://localhost:5672/"
+        // "url": `amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@${RABBIT_MQ_CONN_STRING}:5672/`,
+
+        "hostname": RABBIT_MQ_CONN_STRING,
+        "port": 5672,
+        "user": RABBITMQ_DEFAULT_USER,
+        "password": RABBITMQ_DEFAULT_PASS,
       },
-      "exchanges": ["demo_ex"],
-      "queues": ["demo_q"],
-      "bindings": ["demo_ex[a.b.c] -> demo_q"],
+      "exchanges": [
+        {
+          "name": "deployment_exchange",
+          "type": "direct",
+          "options": {
+            "durable": true
+          }
+        }
+      ],
+      "queues": [
+        {
+          "name": "deployment_queue",
+          "options": {
+            "durable": true
+          }
+        }
+      ],
+      "bindings": ["deployment_exchange -> deployment_queue"],
       "publications": {
-        "demo_pub": {
-          "exchange": "demo_ex",
+        "deployment_publish": {
+          "exchange": "deployment_exchange",
           "routingKey": "a.b.c"
         }
       },
       "subscriptions": {
-        "demo_sub": {
-          "queue": "demo_q",
+        "deployment_subscription": {
+          "queue": "deployment_queue",
           "prefetch": 3
         }
       }
     }
   }
 }
+
+export default config;
+
+/**
+  
+  callback: async (message: any) => {
+    try {
+      const k8sApi = new CoreV1Api("https://kubernetes.default.svc");
+      const namespace = "default";
+      const body = {
+        apiVersion: "v1",
+        kind: "Pod",
+        metadata: {
+          name: `my-pod-${Date.now()}`
+        },
+        spec: {
+          containers: [
+            {
+              name: "my-container",
+              image: "nginx:latest"
+            }
+          ]
+        }
+      };
+      await k8sApi.createNamespacedPod(namespace, body);
+      console.log(`Pod created: ${body.metadata.name}`);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+ */

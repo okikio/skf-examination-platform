@@ -32,22 +32,11 @@ import {
 } from 'https://deno.land/x/kubernetes_apis@v0.3.2/builtin/apps@v1/mod.ts';
 import { debounce } from "https://deno.land/x/debounce@v0.0.7/mod.ts";
 
+import { config } from './config.ts';
+
+import type { BrokerAsPromised } from "https://esm.sh/rascal@16.2.0";
 import rascal from 'npm:rascal';
-import config from './config.ts';
-
-let labs_protocol: string | undefined;
-let labs_domain = Deno.env.get("SKF_LABS_DOMAIN") ?? "";
-
-const subdomain_deploy = Deno.env.get("SKF_LABS_DEPLOY_MODE") === "subdomain";
-if (subdomain_deploy) {
-  [labs_protocol, labs_domain] = /(.*:\/\/)?(.*)/.exec(labs_domain) ?? [];
-  if (!labs_protocol) {
-    labs_protocol = "http://";
-  }
-  console.log( `Subdomain deploy using ${labs_protocol}<lab>.${labs_domain},`);
-} else {
-  console.log(`Port deploy using ${labs_domain}:<port>`);
-}
+const { createBrokerAsPromised } = rascal;
 
 const kubernetes = await autoDetectClient();
 const coreApi = new CoreV1Api(kubernetes);
@@ -63,31 +52,18 @@ const creds = { username: "admin", password: "admin-skf-secret" };
 // const channel = await connection.createChannel();
 // await channel.queueDeclare("deployment_qeue");
 
+let labs_protocol: string | undefined;
+let labs_domain = Deno.env.get("SKF_LABS_DOMAIN") ?? "";
 
-const { BrokerAsPromised: Broker } = rascal;
-
-try {
-  const broker = await Broker.create(config);
-  broker.on('error', console.error);
-
-  // Publish a message
-  for (let i = 0; i < 100; i++) {
-    const publication = await broker.publish('demo_pub', 'Hello World!');
-    publication.on('error', console.error);
-
-    console.count('publish');
+const subdomain_deploy = Deno.env.get("SKF_LABS_DEPLOY_MODE") === "subdomain";
+if (subdomain_deploy) {
+  [labs_protocol, labs_domain] = /(.*:\/\/)?(.*)/.exec(labs_domain) ?? [];
+  if (!labs_protocol) {
+    labs_protocol = "http://";
   }
-
-  // Consume a message
-  const subscription = await broker.subscribe('demo_sub');
-  subscription
-    .on('message', (message: any, content: any, ackOrNack: () => void) => {
-      console.log(content);
-      ackOrNack();
-    })
-    .on('error', console.error);
-} catch (err) {
-  console.error(err);
+  console.log( `Subdomain deploy using ${labs_protocol}<lab>.${labs_domain},`);
+} else {
+  console.log(`Port deploy using ${labs_domain}:<port>`);
 }
 
 export async function createServiceForDeployment(deployment: string, user_id: string) {
@@ -505,3 +481,36 @@ export async function deployContainer(rpc_body: string) {
 //   expectJson: true, // run JSON.parse on the response body
 // });
 // console.log(podList);
+
+try {
+  const broker: BrokerAsPromised = await createBrokerAsPromised(config);
+  broker.on('error', console.error);
+
+  // Publish a message
+  for (let i = 0; i < 100; i++) {
+    const publication = await broker.publish('deployment_publish', 'Hello World!');
+    publication.on('error', console.error);
+
+    console.count('publish');
+  }
+
+  // Consume a message
+  const subscription = await broker.subscribe('deployment_subscription');
+  subscription
+    .on('message', (message: any, content: any, ackOrNack: () => void) => {
+      // const response = deployContainer()
+      // response = deploy_container(str(body, 'utf-8'))
+      // ch.basic_publish(exchange='',
+      //                 routing_key=props.reply_to,
+      //                 properties=pika.BasicProperties(correlation_id = \
+      //                 props.correlation_id,
+      //                 expiration='30000'),
+      //                 body=str(response))
+      // ch.basic_ack(delivery_tag=method.delivery_tag)
+      console.log(content);
+      ackOrNack();
+    })
+    .on('error', console.error);
+} catch (err) {
+  console.error(err);
+}
