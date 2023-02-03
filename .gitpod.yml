@@ -44,3 +44,4 @@ vscode:
     - denoland.vscode-deno
     - github.github-vscode-theme
     - astro-build.astro-vscode
+    - ms-azuretools.vscode-docker
