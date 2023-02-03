@@ -30,27 +30,15 @@ import {
   fromDeploymentSpec, toDeploymentSpec,
   fromDeployment, toDeployment
 } from 'https://deno.land/x/kubernetes_apis@v0.3.2/builtin/apps@v1/mod.ts';
-import { debounce } from "https://deno.land/x/debounce@v0.0.7/mod.ts";
 
 import { config } from './config.ts';
 
-import type { BrokerAsPromised } from "https://esm.sh/rascal@16.2.0";
-import rascal from 'npm:rascal';
+// @deno-types="npm:@types/rascal"
+import rascal from 'rascal';
 const { createBrokerAsPromised } = rascal;
 
 const kubernetes = await autoDetectClient();
 const coreApi = new CoreV1Api(kubernetes);
-const defaultCodeAPI = coreApi.namespace("default");
-
-const podList = await defaultCodeAPI.getPodList();
-
-const creds = { username: "admin", password: "admin-skf-secret" };
-// const connection = await kubernetes_apis.createConnection({
-//     host: settings.RABBIT_MQ_CONN_STRING,
-//     credentials: creds,
-// });
-// const channel = await connection.createChannel();
-// await channel.queueDeclare("deployment_qeue");
 
 let labs_protocol: string | undefined;
 let labs_domain = Deno.env.get("SKF_LABS_DOMAIN") ?? "";
@@ -366,7 +354,6 @@ export async function waitGetCompletedPodPhase(release: string, user_id: string)
       }
     }
   }
-  // const printTableSoon = debounce(printRouteTable, 2000);
 
   return await podWatcher.goObserveAll(async iter => {
     console.log('observing...');
@@ -396,19 +383,6 @@ export async function waitGetCompletedPodPhase(release: string, user_id: string)
     }
     console.log('observer done');
   });
-
-  // const w = watch.Watch()
-  // for (const event in w.stream(
-  //   api_instance.list_namespaced_pod,
-  //   namespace = user_id,
-  //   timeout_seconds = 3)) {
-  //   resource_name = event['object'].metadata.name
-  //   if release in resource_name:
-  //     pod_state = event['object'].status.phase
-  //   if pod_state == 'Running':
-  //     w.stop()
-  //   return pod_state
-  // }
 }
 
 export async function deployContainer(rpc_body: string) {
@@ -422,7 +396,7 @@ export async function deployContainer(rpc_body: string) {
   let service_port = -1;
   try {
     service_port = await createServiceForDeployment(deployment, user_id)
-  } catch (e) {
+  } catch (_e) {
     const api = new CoreV1Api(kubernetes);
     const response = await api.namespace(user_id).getServiceList();
     for (const i of response.items) {
@@ -470,20 +444,9 @@ export async function deployContainer(rpc_body: string) {
     return await getHostPortFromResponse(response)
   }
 }
-// console.log(podList);
-
-// import { autoDetectClient } from 'https://deno.land/x/kubernetes_client/mod.ts';
-// const kubernetes = await autoDetectClient();
-
-// const podList = await kubernetes.performRequest({
-//   method: 'GET',
-//   path: `/api/v1/namespaces/default/pods`,
-//   expectJson: true, // run JSON.parse on the response body
-// });
-// console.log(podList);
 
 try {
-  const broker: BrokerAsPromised = await createBrokerAsPromised(config);
+  const broker = await createBrokerAsPromised(config);
   broker.on('error', console.error);
 
   // Publish a message
@@ -497,8 +460,13 @@ try {
   // Consume a message
   const subscription = await broker.subscribe('deployment_subscription');
   subscription
-    .on('message', (message: any, content: any, ackOrNack: () => void) => {
-      // const response = deployContainer()
+    .on('message', async (message, content, ackOrNack) => {
+      const response = await deployContainer(
+        ArrayBuffer.isView(content) || content instanceof ArrayBuffer ?
+          new TextDecoder().decode(content) :
+          content
+      );
+
       // response = deploy_container(str(body, 'utf-8'))
       // ch.basic_publish(exchange='',
       //                 routing_key=props.reply_to,
@@ -507,7 +475,17 @@ try {
       //                 expiration='30000'),
       //                 body=str(response))
       // ch.basic_ack(delivery_tag=method.delivery_tag)
+
       console.log(content);
+      const props = message.properties;
+      const method = message.fields;
+      const publication = await broker.publish('deployment_publish', String(response), {
+        routingKey: props.replyTo,
+        options: {
+          correlationId: props.correlationId,
+          expiration: 30_000,
+        }
+      });
       ackOrNack();
     })
     .on('error', console.error);

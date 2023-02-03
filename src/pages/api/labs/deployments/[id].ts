@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getSupabase } from '../../../../db/db';
+import { getSupabase } from '@/db/db';
 
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

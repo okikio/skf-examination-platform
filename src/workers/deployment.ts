@@ -2,23 +2,22 @@ import { delay } from 'https://deno.land/x/delay@v0.2.0/mod.ts';
 
 import { config } from './config.ts';
 
-import type { BrokerAsPromised } from "https://esm.sh/rascal@16.2.0";
-import rascal from 'npm:rascal';
-
+// @deno-types="npm:@types/rascal"
+import rascal from 'rascal';
 const { createBrokerAsPromised } = rascal;
 
 try {
-  const broker: BrokerAsPromised = await createBrokerAsPromised(config);
+  const broker = await createBrokerAsPromised(config);
   broker.on('error', console.error);
 
   // Publish a message
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 10; i++) {
     const publication = await broker.publish('deployment_publish', 'Hello World!');
     publication.on('error', console.error);
 
     console.count('publish');
     
-    await delay(100);
+    await delay(10);
   }
 
   // Consume a message

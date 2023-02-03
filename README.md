@@ -44,3 +44,9 @@ https://registry.hub.docker.com/_/rabbitmq/#:~:text=and%20password%20of-,guest%2
 > login is 
 > * username: **guest** 
 > * password: **guest**
+
+## Deno Kubernetes
+
+```sh
+pnpm deno:kubernetes
+```

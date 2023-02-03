@@ -3,6 +3,9 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "svelte",
-    "types": ["unplugin-icons/types/svelte"]
+    "types": ["unplugin-icons/types/svelte"],
+    "paths": {
+      "@/*": ["src/*"]
+    }
   }
 }
