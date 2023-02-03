@@ -49,7 +49,7 @@ if (subdomain_deploy) {
   if (!labs_protocol) {
     labs_protocol = "http://";
   }
-  console.log( `Subdomain deploy using ${labs_protocol}<lab>.${labs_domain},`);
+  console.log(`Subdomain deploy using ${labs_protocol}<lab>.${labs_domain},`);
 } else {
   console.log(`Port deploy using ${labs_domain}:<port>`);
 }
