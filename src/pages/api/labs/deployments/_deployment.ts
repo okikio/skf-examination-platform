@@ -20,7 +20,7 @@ export async function getAuth(supabase: SupabaseClientType) {
   return data;
 }
 
-export async function deployLabs(supabase: SupabaseClientType, instanceId: number, userId: string | number) {
+export async function deployLabs(supabase: SupabaseClientType, instanceId: number, userId: string) {
   await getAuth(supabase);
 
   const labs = supabase.from("lab_items").select("*");
@@ -35,10 +35,10 @@ export async function deployLabs(supabase: SupabaseClientType, instanceId: numbe
   const correlationId = await nanoid();
   const subscription = await broker.subscribe('deployment_subscription');
 
-  const body = lab.image_tag + ":" + str(userid)
+  const body = lab.image_tag + ":" + String(userId);
 
   // Publish a message
-  const publication = await broker.publish('deployment_publish', String(response), {
+  const publication = await broker.publish('deployment_publish', String(body), {
     routingKey: 'deployment_queue',
     options: {
       correlationId,
@@ -46,20 +46,11 @@ export async function deployLabs(supabase: SupabaseClientType, instanceId: numbe
     }
   });
   publication.on('error', console.error);
-  // self.corr_id = str(uuid.uuid4())
-  // self.channel.basic_publish(
-  //   exchange = '',
-  //   routing_key = 'deployment_qeue',
-  //   properties = pika.BasicProperties(
-  //     reply_to = self.callback_queue,
-  //     correlation_id = self.corr_id,
-  //   ),
-  //   body = n)
 
   // Consume a message
-  return await new Promise(resolve => {
+  return await new Promise<typeof body>(resolve => {
     subscription
-      .on('message', (message, content, ackOrNack) => {
+      .on('message', (message, content: typeof body, ackOrNack) => {
         const props = message.properties;
         if (correlationId == props.correlationId) {
           console.log([message, content]);

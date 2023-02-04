@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getSupabase } from '@/db/db';
+import { deployLabs, getAuth } from './_deployment';
 
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,15 +18,19 @@ export const get: APIRoute = async (context) => {
 
   try {
     const supabase = getSupabase(context);
-    const { data, error } = await supabase.auth.getSession();
+    const data = await getAuth(supabase);
+    
+    const userId = data.session?.user.id;
 
-    const { access_token, refresh_token } = data?.session ?? {};
-    if (!access_token || !refresh_token) {
-      throw new Error("Missing access_token or refresh_token");
-    }
+    const IDValid = params.id !== undefined;
+    const UserValid = userId !== undefined;
 
-    if (error) throw error; 
-    return new Response(JSON.stringify({ data }), {
+    if (!IDValid || !UserValid) 
+      throw new Error(!IDValid ? `Deployment ID isn't defined` : `User isn't defined. Are you logged in?`);
+
+    const result = await deployLabs(supabase, Number(params.id), userId)
+    
+    return new Response(JSON.stringify({ result }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
     })
