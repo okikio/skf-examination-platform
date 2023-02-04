@@ -50,3 +50,18 @@ https://registry.hub.docker.com/_/rabbitmq/#:~:text=and%20password%20of-,guest%2
 ```sh
 pnpm deno:kubernetes
 ```
+
+## Database Migration
+
+Database migration is now complete, I used https://stackoverflow.com/a/34726143
+
+> ^ But you will need to install the `sqlite3` & `postgres` gems (yes, Ruby gems)
+
+
+```sh
+gem install sqlite3 &&
+gem install postgres &&
+gem install sequel
+```
+
+> I used https://stackoverflow.com/a/46723784 for debugging the `Sequel::AdapterNotFound: LoadError: cannot load such file -- sqlite3`

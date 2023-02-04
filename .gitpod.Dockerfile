@@ -22,3 +22,5 @@ RUN brew install kind
 RUN brew install kubectl
 RUN brew install minikube
 RUN brew install helm
+
+RUN nvm install 19

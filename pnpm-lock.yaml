@@ -29,6 +29,7 @@ specifiers:
   eslint-plugin-astro: ^0.23.0
   eslint-plugin-svelte3: ^4.0.0
   marked: ^4.2.12
+  nanoid: ^4.0.0
   prettier: ^2.8.3
   prettier-plugin-astro: ^0.8.0
   prettier-plugin-svelte: ^2.9.0
@@ -72,6 +73,7 @@ devDependencies:
   eslint: 8.33.0
   eslint-plugin-astro: 0.23.0_eslint@8.33.0
   eslint-plugin-svelte3: 4.0.0_4omm2ewoudhgnmf7aocafatnc4
+  nanoid: 4.0.0
   prettier: 2.8.3
   prettier-plugin-astro: 0.8.0
   prettier-plugin-svelte: 2.9.0_kdmmghgdi3ngrsq6otxkjilbry
@@ -3958,6 +3960,12 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid/4.0.0:
+    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: true
 
   /natural-compare-lite/1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
