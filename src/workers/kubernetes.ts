@@ -413,7 +413,7 @@ export async function deployContainer(rpc_body: string) {
   if (subdomain_deploy) {
     const hostname = `${deployment}-${user_id}.${labs_domain}`
 
-  console.log({ hostname })
+    console.log({ hostname })
 
     try {
       const ingress_err = await createIngress(networkApi, hostname, deployment, service_port, user_id)
@@ -455,26 +455,44 @@ try {
   broker.on('error', console.error);
 
   // Consume a message
-  const subscription = await broker.subscribe('deployment_subscription');
+  const subscription = await broker.subscribe('deployment_subscription', {
+    options: {
+      noAck: true
+    }
+  });
   subscription
     .on('message', async (message, content, ackOrNack) => {
-      console.log({
-        content
-      })
-      const response = await deployContainer(
-        ArrayBuffer.isView(content) || content instanceof ArrayBuffer ?
-          new TextDecoder().decode(content) :
-          content
-      );
-
-      console.log({ response });
       const props = message.properties;
-      await broker.publish('deployment_publish', String(response), {
-        options: {
-          correlationId: props.correlationId,
-        }
-      });
-      ackOrNack();
+      const method = message.fields;
+
+      if (method.routingKey === "deploy") {
+        const response = await deployContainer(
+          ArrayBuffer.isView(content) || content instanceof ArrayBuffer ?
+            new TextDecoder().decode(content) :
+            content
+        );
+
+        console.log({ response });
+        console.log([message, content]);
+        await broker.publish('deployment_publish', String(response), {
+          routingKey: "reply",
+          options: {
+            correlationId: props.correlationId,
+            expiration: 30_000,
+          }
+        });
+
+        ackOrNack(undefined, [
+          {
+            strategy: 'republish',
+            defer: 1000,
+            attempts: 10,
+          },
+          {
+            strategy: 'nack',
+          },
+        ]);
+      }
     })
     .on('error', console.error);
 } catch (err) {

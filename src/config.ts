@@ -26,38 +26,24 @@ export const config: BrokerConfig = defineConfig({
         "password": RABBITMQ_DEFAULT_PASS,
       },
       
-      "exchanges": ["deployment_exchange"], // 
-      "queues": {
-        "replyTo": true,
-        "deployment_queue": {
-          options: {
-            
+      "exchanges": ["deployment_exchange"], 
+      "queues": ["deployment_queue"],
+      
+      "bindings": ["deployment_exchange -> deployment_queue"],
+      "publications": {
+        "deployment_publish": {
+          "exchange": "deployment_exchange",
+          "options": {
+            "replyTo": "deployment_queue"
           }
         }
       },
-      
-      // // "bindings": ["deployment_exchange[a.b.c] -> deployment_queue"],
-      // "queues": ["deployment_queue"],
-      // "publications": {
-      //   "deployment_publish": {
-      //     "exchange": "", // deployment_exchange
-      //     "routingKey": "deployment", // _queue
-      //   }
-      // },
-      // "subscriptions": {
-      //   "deployment_subscription": {
-      //     "queue": "deployment_queue", //
-      //     "prefetch": 3
-      //   }
-      // }
-    }
-  },
 
-  "publications": {
-    "deployment_publish": {
-      "exchange": "deployment_exchange",
-      "options": {
-        "replyTo": "deployment_queue"
+      "subscriptions": {
+        "deployment_subscription": {
+          "queue": "deployment_queue", 
+          "prefetch": 3
+        }
       }
     }
   },
