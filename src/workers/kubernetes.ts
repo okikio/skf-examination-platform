@@ -205,10 +205,6 @@ export async function createDeployment(deployment: Deployment, user_id: string) 
 
     try {
       const existingDeployment = await namespace.getDeployment(deploymentName);
-
-      console.log({
-        existingDeployment
-      })
       return existingDeployment
 
       // deno-lint-ignore no-empty
@@ -238,17 +234,45 @@ export async function getServiceExposedIP(deployment: string, user_id: string) {
   }
 }
 
-export async function getHostPortFromResponse(response: Service) {
+export async function portForward(deployment: string, user_id: string, ports: number) {
   try {
-    let node_port = -1;
+    const response = coreApi.namespace(user_id);
+    const service = await response.getService(deployment);
+    console.log({ service, serviceMeta: service.metadata, serviceSpec: service.spec, podList: (await response.getPodList())?.items }); 
+    await response.connectGetPodPortforward(deployment, {
+      ports
+    })
+  } catch (e) {
+    throw new Error('Failed to deploy, error port forward!', {
+      cause: e
+    })
+  }
+}
+
+export async function getHostPortFromResponse(type: "node-port", response: Service): Promise<number>;
+export async function getHostPortFromResponse(type: "target-port", response: Service): Promise<number | string>;
+export async function getHostPortFromResponse(type: "node-port" | "target-port" = "node-port", response: Service) {
+  try {
+    let port: string | number = -1;
     const servicePorts = response.spec?.ports ?? [];
+    console.log({
+      servicePorts
+    })
     for (const service of servicePorts) {
-      if (service.nodePort)
-        node_port = service.nodePort;
+      switch (type) {
+        case "node-port":
+          if (service.nodePort)
+            port = service.nodePort;
+          break;
+        case "target-port":
+          if (service.targetPort)
+            port = service.targetPort;
+
+      }
     }
 
     // const res = labs_domain + ":" + node_port?.toString();
-    return node_port;
+    return port;
   } catch (e) {
     throw new Error('Failed to deploy, error no host or port!', {
       cause: e
@@ -334,7 +358,6 @@ export function split(body: string) {
   return body.split(':');
 }
 
-
 export async function waitGetCompletedPodPhase(release: string, user_id: string) {
   const api_instance = coreApi.namespace(user_id);
   const podWatcher = new Reflector(
@@ -389,7 +412,7 @@ export async function waitGetCompletedPodPhase(release: string, user_id: string)
 }
 
 export async function deployContainer(rpc_body: string) {
-  console.log(rpc_body)
+  console.log({ rpc_body })
   const [deployment, user_id] = split(rpc_body);
   await createUserNamespace(user_id);
 
@@ -403,12 +426,15 @@ export async function deployContainer(rpc_body: string) {
     const response = await coreApi.namespace(user_id).getServiceList();
     for (const i of response.items) {
       if (i?.metadata?.name == deployment) {
-        service_port = await getHostPortFromResponse(i)
+        service_port = await getHostPortFromResponse("node-port", i)
       }
     }
   }
 
-  console.log({ service_port })
+  console.log({
+    service_port,
+    hostname: `${deployment}-${user_id}.${labs_domain}`
+  })
 
   if (subdomain_deploy) {
     const hostname = `${deployment}-${user_id}.${labs_domain}`
@@ -446,7 +472,9 @@ export async function deployContainer(rpc_body: string) {
     }
   } else {
     const response = await getServiceExposedIP(deployment, user_id)
-    return await getHostPortFromResponse(response)
+    const ports = await getHostPortFromResponse("target-port", response)
+    await portForward(deployment, user_id, Number(ports))
+    return ports
   }
 }
 
