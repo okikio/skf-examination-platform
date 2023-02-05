@@ -31,7 +31,7 @@ import {
   fromDeployment, toDeployment
 } from 'https://deno.land/x/kubernetes_apis@v0.3.2/builtin/apps@v1/mod.ts';
 
-import { config } from './config.ts';
+import { config } from '../config.ts';
 
 // @deno-types="npm:@types/rascal"
 import rascal from 'rascal';
@@ -39,6 +39,8 @@ const { createBrokerAsPromised } = rascal;
 
 const kubernetes = await autoDetectClient();
 const coreApi = new CoreV1Api(kubernetes);
+const appsApi = new AppsV1Api(kubernetes);
+const networkApi = new NetworkingV1Api(kubernetes);
 
 let labs_protocol: string | undefined;
 let labs_domain = Deno.env.get("SKF_LABS_DOMAIN") ?? "";
@@ -55,7 +57,7 @@ if (subdomain_deploy) {
 }
 
 export async function createServiceForDeployment(deployment: string, user_id: string) {
-  const randomPort = 40000 + (Math.random() * (60000 - 40000));
+  const randomPort = Math.round(40000 + (Math.random() * (60000 - 40000)));
   const service = toService(
     fromService({
       apiVersion: "v1",
@@ -82,13 +84,24 @@ export async function createServiceForDeployment(deployment: string, user_id: st
   );
 
   const response = coreApi.namespace(user_id);
-  await response.createService(service);
+
+  try {
+    await response.getService(deployment);
+  } catch (_e) {
+    const newService = await response.createService(service);
+    console.log({
+      newService
+    })
+  }
+
   return randomPort;
 }
 
 export async function createUserNamespace(user_id: string) {
   try {
-    const api_instance = new CoreV1Api(kubernetes);
+    console.log({
+      user_id
+    })
     const body = toNamespace(
       fromNamespace({
         metadata: toObjectMeta(
@@ -99,7 +112,17 @@ export async function createUserNamespace(user_id: string) {
       })
     );
 
-    await api_instance.createNamespace(body);
+    try {
+      await coreApi.getNamespace(user_id);
+      return;
+
+      // deno-lint-ignore no-empty
+    } catch (_e) { }
+
+    console.log({
+      namespace: body
+    })
+    await coreApi.createNamespace(body);
   } catch (e) {
     throw new Error('Failed to deploy, error namespace creation!', {
       cause: e
@@ -176,23 +199,40 @@ export function createDeploymentObject(deployment: string) {
 
 export async function createDeployment(deployment: Deployment, user_id: string) {
   try {
-    const k8s_apps_v1 = new AppsV1Api(kubernetes);
-    const response = await k8s_apps_v1.namespace(user_id).createDeployment(deployment);
+    const namespace = appsApi.namespace(user_id);
+    const deploymentName = deployment.metadata?.name;
+    if (!deploymentName) throw new Error(`Deployment name isn't valid, name: ${deployment.metadata?.name}`);
+
+    try {
+      const existingDeployment = await namespace.getDeployment(deploymentName);
+
+      console.log({
+        existingDeployment
+      })
+      return existingDeployment
+
+      // deno-lint-ignore no-empty
+    } catch (_e) { }
+
+    const response = await namespace.createDeployment(deployment);
     return response
   } catch (e) {
-    throw new Error('Failed to deploy, error creation deployment object!', {
+    throw new Error('Failed to deploy, error K8s API create call!', {
       cause: e
     })
   }
 }
 
-
 export async function getServiceExposedIP(deployment: string, user_id: string) {
   try {
-    const api_instance = new CoreV1Api(kubernetes);
-    return await api_instance.namespace(user_id).getService(deployment);
+    const response = coreApi.namespace(user_id);
+
+    console.log({
+      exposedIp: response
+    })
+    return await response.getService(deployment);
   } catch (e) {
-    throw new Error('Failed to deploy, error namespace creation!', {
+    throw new Error('Failed to deploy, error service no exposed IP!', {
       cause: e
     })
   }
@@ -273,54 +313,17 @@ export async function createIngress(networking_v1_api: NetworkingV1Api, hostname
 
     // Creation of the Deployment in specified namespace
     // (Can replace "default" with a namespace you may have created)
-    await networking_v1_api.namespace(user_id).createIngress(body);
-    return null
+    const response = networking_v1_api.namespace(user_id);
+    try {
+      const ingressName = body.metadata?.name! as `ingress-${string}`;
+      await response.getIngress(ingressName);
 
-    // This code creates a new deployment, and adds it to the
-    // deployments list.
-    // const new_deployment = networking_v1_api. (
-    //   fromDeploymentSpec({ name: deployment })
-    // );
-    // self.deployments.append(new_deployment)
-    // const body = client.V1Ingress(
-    //     api_version="networking.k8s.io/v1",
-    //     kind="Ingress",
-    //     metadata=client.V1ObjectMeta(name="ingress-"+deployment, annotations={
-    //         "kubernetes.io/ingress.class": "nginx",
-    //     }),
-    //     spec=client.V1IngressSpec(
-    //         rules=[client.V1IngressRule(
-    //             host=hostname,
-    //             http=client.V1HTTPIngressRuleValue(
-    //                 paths=[client.V1HTTPIngressPath(
-    //                     path="/",
-    //                     path_type="Prefix",
-    //                     backend=client.V1IngressBackend(
-    //                         service=client.V1IngressServiceBackend(
-    //                         port=client.V1ServiceBackendPort(
-    //                             number=service_port,
-    //                         ),
-    //       # This code creates a new deployment, and adds it to the
-    //       # deployments list.
-    //       new_deployment = Deployment(name=deployment)
-    //       self.deployments.append(new_deployment)
+      // deno-lint-ignore no-empty
+    } catch (_e) { }
 
-    //                         name=deployment)
-    //                     )
-    //                 )]
-    //             )
-    //         )]
-    //     )
-    // )
-    // # Creation of the Deployment in specified namespace
-    // # (Can replace "default" with a namespace you may have created)
-    // networking_v1_api.create_namespaced_ingress(
-    //     namespace=user_id,
-    //     body=body
-    // )
-    // return None
+    await response.createIngress(body);
+    return null;
   } catch (e) {
-    console.error('Error creating ingress:', e)
     throw new Error('Failed to create ingress!', {
       cause: e
     })
@@ -333,7 +336,7 @@ export function split(body: string) {
 
 
 export async function waitGetCompletedPodPhase(release: string, user_id: string) {
-  const api_instance = new CoreV1Api(kubernetes).namespace(user_id);
+  const api_instance = coreApi.namespace(user_id);
   const podWatcher = new Reflector(
     opts => api_instance.getPodList(opts),
     opts => api_instance.watchPodList(opts)
@@ -386,8 +389,8 @@ export async function waitGetCompletedPodPhase(release: string, user_id: string)
 }
 
 export async function deployContainer(rpc_body: string) {
-  const user_id = split(rpc_body)[1];
-  const deployment = split(rpc_body)[1];
+  console.log(rpc_body)
+  const [deployment, user_id] = split(rpc_body);
   await createUserNamespace(user_id);
 
   const deployment_object = createDeploymentObject(deployment)
@@ -397,8 +400,7 @@ export async function deployContainer(rpc_body: string) {
   try {
     service_port = await createServiceForDeployment(deployment, user_id)
   } catch (_e) {
-    const api = new CoreV1Api(kubernetes);
-    const response = await api.namespace(user_id).getServiceList();
+    const response = await coreApi.namespace(user_id).getServiceList();
     for (const i of response.items) {
       if (i?.metadata?.name == deployment) {
         service_port = await getHostPortFromResponse(i)
@@ -406,12 +408,15 @@ export async function deployContainer(rpc_body: string) {
     }
   }
 
+  console.log({ service_port })
+
   if (subdomain_deploy) {
     const hostname = `${deployment}-${user_id}.${labs_domain}`
-    const networking_v1_api = new NetworkingV1Api(kubernetes);
+
+  console.log({ hostname })
 
     try {
-      const ingress_err = await createIngress(networking_v1_api, hostname, deployment, service_port, user_id)
+      const ingress_err = await createIngress(networkApi, hostname, deployment, service_port, user_id)
 
       let runLoop = true
       while (runLoop) {
@@ -426,7 +431,7 @@ export async function deployContainer(rpc_body: string) {
       if (ingress_err) return ingress_err;
       return labs_protocol + hostname
     } catch (_error) {
-      const response_ingress = await networking_v1_api.namespace(user_id).getIngressList();
+      const response_ingress = await networkApi.namespace(user_id).getIngressList();
       for (const i of response_ingress.items) {
         const rules = i?.spec?.rules ?? [];
         for (const item of rules) {
@@ -449,41 +454,24 @@ try {
   const broker = await createBrokerAsPromised(config);
   broker.on('error', console.error);
 
-  // Publish a message
-  for (let i = 0; i < 100; i++) {
-    const publication = await broker.publish('deployment_publish', 'Hello World!');
-    publication.on('error', console.error);
-
-    console.count('publish');
-  }
-
   // Consume a message
   const subscription = await broker.subscribe('deployment_subscription');
   subscription
     .on('message', async (message, content, ackOrNack) => {
+      console.log({
+        content
+      })
       const response = await deployContainer(
         ArrayBuffer.isView(content) || content instanceof ArrayBuffer ?
           new TextDecoder().decode(content) :
           content
       );
 
-      // response = deploy_container(str(body, 'utf-8'))
-      // ch.basic_publish(exchange='',
-      //                 routing_key=props.reply_to,
-      //                 properties=pika.BasicProperties(correlation_id = \
-      //                 props.correlation_id,
-      //                 expiration='30000'),
-      //                 body=str(response))
-      // ch.basic_ack(delivery_tag=method.delivery_tag)
-
-      console.log(content);
+      console.log({ response });
       const props = message.properties;
-      const method = message.fields;
-      const publication = await broker.publish('deployment_publish', String(response), {
-        routingKey: props.replyTo,
+      await broker.publish('deployment_publish', String(response), {
         options: {
           correlationId: props.correlationId,
-          expiration: 30_000,
         }
       });
       ackOrNack();

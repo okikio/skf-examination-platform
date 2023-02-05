@@ -15,6 +15,7 @@ specifiers:
   '@kubernetes/client-node': ^0.18.1
   '@supabase/auth-helpers-shared': ^0.2.4
   '@supabase/supabase-js': ^2.7.0
+  '@types/amqplib': ^0.10.1
   '@types/marked': ^4.0.8
   '@types/node': ^18.11.18
   '@types/rascal': ^10.0.6
@@ -64,6 +65,7 @@ dependencies:
 devDependencies:
   '@iconify-json/fluent': 1.1.17
   '@iconify-json/fluent-emoji': 1.1.10
+  '@types/amqplib': 0.10.1
   '@types/marked': 4.0.8
   '@types/node': 18.11.18
   '@types/rascal': 10.0.6
@@ -1972,10 +1974,6 @@ packages:
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
-    dev: false
-
-  /core-util-is/1.0.3:
-    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: false
 
   /crelt/1.0.5:
@@ -4419,7 +4417,7 @@ packages:
   /readable-stream/1.1.14:
     resolution: {integrity: sha512-+MeVjFf4L44XUkhM1eYbD8fyEsxcV81pqMSR5gblfcLCHfZvbrqy4/qYHE+/R5HoBUT11WV5O08Cr1n3YXkWVQ==}
     dependencies:
-      core-util-is: 1.0.3
+      core-util-is: 1.0.2
       inherits: 2.0.4
       isarray: 0.0.1
       string_decoder: 0.10.31

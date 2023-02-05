@@ -47,6 +47,7 @@
   "devDependencies": {
     "@iconify-json/fluent": "^1.1.17",
     "@iconify-json/fluent-emoji": "^1.1.10",
+    "@types/amqplib": "^0.10.1",
     "@types/marked": "^4.0.8",
     "@types/node": "^18.11.18",
     "@types/rascal": "^10.0.6",
