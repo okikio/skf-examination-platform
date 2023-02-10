@@ -6,3 +6,5 @@ export async function getApiKey() {
   dotenv.config();
   return process.env.PUBLIC_SUPABASE_API_KEY;
 }
+
+export const supabaseUrl = "https://ccsgfooankckfqpmcfyb.supabase.co";

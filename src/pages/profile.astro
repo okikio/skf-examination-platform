@@ -2,13 +2,16 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Profile from "../components/profile/Profile.svelte";
 import { checkSession } from "../utils/checkSession";
+import { getUserDataSSR } from "../db/users/getUserData";
 
 const isLoggedin = await checkSession(Astro);
 if (!isLoggedin) return Astro.redirect("/login");
+
+const user = await getUserDataSSR(Astro);
 ---
 
 <BaseLayout title="SKF | Profile" isLoggedin={isLoggedin}>
   <div class="wrapper">
-    <Profile client:load isLoggedin={isLoggedin} />
+    <Profile client:load isLoggedin={isLoggedin} user={user} />
   </div>
 </BaseLayout>

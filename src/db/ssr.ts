@@ -1,11 +1,10 @@
-import { getApiKey } from "../utils/consts";
+import { getApiKey, supabaseUrl } from "../utils/consts";
 import {
   CookieOptions,
   createServerSupabaseClient as _createServerSupabaseClient,
 } from "@supabase/auth-helpers-shared";
 import type { AstroGlobal, APIContext } from "astro";
 
-const supabaseUrl = "https://ccsgfooankckfqpmcfyb.supabase.co";
 const supabaseKey = (await getApiKey()) || "";
 
 export const supabaseSSR = (context: APIContext | AstroGlobal) =>

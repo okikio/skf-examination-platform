@@ -13,6 +13,7 @@
   import { setUserSSRSession } from "../db/users/setUserSSRSession";
 
   let emailInput = "";
+  let nameInput = "";
   let passwordInput = "";
   let passwordConfirmInput = "";
   let error = "";
@@ -22,6 +23,7 @@
     if (
       passwordInput === "" ||
       (mode === "register" && passwordConfirmInput === "") ||
+      (mode === "register" && nameInput === "") ||
       emailInput === ""
     ) {
       error = "Please fill out all fields";
@@ -39,7 +41,7 @@
       data,
       error: responseError,
       message: messageResponse,
-    } = await registerOrLogin(emailInput, passwordInput);
+    } = await registerOrLogin(emailInput, passwordInput, nameInput);
 
     if (responseError && messageResponse) {
       error = messageResponse;
@@ -84,6 +86,12 @@
   </div>
 
   <form on:submit|preventDefault={handleSubmit}>
+    {#if mode === "register"}
+      <div class="item-input">
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" bind:value={nameInput} />
+      </div>
+    {/if}
     <div class="item-input">
       <label for="email">Email:</label>
       <input type="email" id="email" bind:value={emailInput} />

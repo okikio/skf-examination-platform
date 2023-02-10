@@ -1,10 +1,10 @@
 import { writeFile } from "fs/promises";
-import { getApiKey } from "../utils/consts";
+import { getApiKey, supabaseUrl } from "../utils/consts";
 
 async function fetchLabs() {
   const apiKey = await getApiKey();
   if (!apiKey) return console.error("Error getting API key");
-  const url = "https://ccsgfooankckfqpmcfyb.supabase.co/rest/v1/labs?select=*";
+  const url = `${supabaseUrl}/rest/v1/labs?select=*`;
   const headers = {
     apikey: apiKey,
     "Content-Type": "application/json",
