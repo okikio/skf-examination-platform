@@ -1,6 +1,6 @@
 {
   "deno.enablePaths": [
-    "./src/workers"
+    "./packages/workers"
   ],
-  "deno.config": "./deno.jsonc"
+  "deno.config": "./packages/workers/deno.jsonc"
 }

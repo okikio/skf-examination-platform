@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { config } from '@/config';
+import { config } from '@skf/shared/config';
 import { nanoid } from "nanoid";
 
 import type { Message } from 'amqplib';

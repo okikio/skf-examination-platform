@@ -1,106 +1,88 @@
 lockfileVersion: 5.4
 
-importers:
+specifiers:
+  '@astrojs/svelte': ^2.0.1
+  '@astrojs/vercel': ^3.0.1
+  '@codemirror/lang-javascript': ^6.1.3
+  '@codemirror/state': ^6.2.0
+  '@codemirror/theme-one-dark': ^6.1.0
+  '@codemirror/view': ^6.8.0
+  '@fontsource/electrolize': ^4.5.8
+  '@fontsource/lexend-deca': ^4.5.14
+  '@fontsource/manrope': ^4.5.13
+  '@iconify-json/fluent': ^1.1.17
+  '@iconify-json/fluent-emoji': ^1.1.10
+  '@kubernetes/client-node': ^0.18.1
+  '@supabase/auth-helpers-shared': ^0.2.4
+  '@supabase/supabase-js': ^2.7.1
+  '@types/amqplib': ^0.10.1
+  '@types/marked': ^4.0.8
+  '@types/node': ^18.13.0
+  '@types/rascal': ^10.0.6
+  '@typescript-eslint/eslint-plugin': ^5.51.0
+  '@typescript-eslint/parser': ^5.51.0
+  amqplib: ^0.10.3
+  astro: ^2.0.7
+  chart.js: ^4.2.0
+  codemirror: ^6.0.1
+  dotenv: ^16.0.3
+  eslint: ^8.33.0
+  eslint-plugin-astro: ^0.23.0
+  eslint-plugin-svelte3: ^4.0.0
+  marked: ^4.2.12
+  nanoid: ^4.0.1
+  prettier: ^2.8.3
+  prettier-plugin-astro: ^0.8.0
+  prettier-plugin-svelte: ^2.9.0
+  rascal: ^16.3.0
+  supabase: ^1.37.1
+  svelte: ^3.55.1
+  tsx: ^3.12.3
+  typescript: ^4.9.5
+  unplugin-icons: ^0.15.2
 
-  .:
-    specifiers:
-      typescript: ^4.9.5
-    devDependencies:
-      typescript: 4.9.5
+dependencies:
+  '@astrojs/svelte': 2.0.1_535esc4edu2m27ydesuoozhiru
+  '@astrojs/vercel': 3.0.1_astro@2.0.7
+  '@codemirror/lang-javascript': 6.1.3
+  '@codemirror/state': 6.2.0
+  '@codemirror/theme-one-dark': 6.1.0
+  '@codemirror/view': 6.8.0
+  '@fontsource/electrolize': 4.5.8
+  '@fontsource/lexend-deca': 4.5.14
+  '@fontsource/manrope': 4.5.13
+  '@kubernetes/client-node': 0.18.1
+  '@supabase/auth-helpers-shared': 0.2.4_wwkefq4crizglppdxtjqhrdudm
+  '@supabase/supabase-js': 2.7.1
+  amqplib: 0.10.3
+  astro: 2.0.7_@types+node@18.13.0
+  chart.js: 4.2.0
+  codemirror: 6.0.1
+  marked: 4.2.12
+  rascal: 16.3.0_amqplib@0.10.3
+  svelte: 3.55.1
 
-  packages/astro:
-    specifiers:
-      '@astrojs/svelte': ^2.0.1
-      '@astrojs/vercel': ^3.0.1
-      '@codemirror/lang-javascript': ^6.1.3
-      '@codemirror/state': ^6.2.0
-      '@codemirror/theme-one-dark': ^6.1.0
-      '@codemirror/view': ^6.8.0
-      '@fontsource/electrolize': ^4.5.8
-      '@fontsource/lexend-deca': ^4.5.14
-      '@fontsource/manrope': ^4.5.13
-      '@iconify-json/fluent': ^1.1.17
-      '@iconify-json/fluent-emoji': ^1.1.10
-      '@kubernetes/client-node': ^0.18.1
-      '@skf/shared': workspace:^0.0.1
-      '@supabase/auth-helpers-shared': ^0.2.4
-      '@supabase/supabase-js': ^2.7.1
-      '@types/amqplib': ^0.10.1
-      '@types/marked': ^4.0.8
-      '@types/node': ^18.13.0
-      '@types/rascal': ^10.0.6
-      '@typescript-eslint/eslint-plugin': ^5.51.0
-      '@typescript-eslint/parser': ^5.51.0
-      amqplib: ^0.10.3
-      astro: ^2.0.7
-      chart.js: ^4.2.0
-      codemirror: ^6.0.1
-      dotenv: ^16.0.3
-      eslint: ^8.33.0
-      eslint-plugin-astro: ^0.23.0
-      eslint-plugin-svelte3: ^4.0.0
-      marked: ^4.2.12
-      nanoid: ^4.0.1
-      prettier: ^2.8.3
-      prettier-plugin-astro: ^0.8.0
-      prettier-plugin-svelte: ^2.9.0
-      rascal: ^16.3.0
-      supabase: ^1.37.1
-      svelte: ^3.55.1
-      tsx: ^3.12.3
-      typescript: ^4.9.5
-      unplugin-icons: ^0.15.2
-    dependencies:
-      '@astrojs/svelte': 2.0.1_535esc4edu2m27ydesuoozhiru
-      '@astrojs/vercel': 3.0.1_astro@2.0.7
-      '@codemirror/lang-javascript': 6.1.3
-      '@codemirror/state': 6.2.0
-      '@codemirror/theme-one-dark': 6.1.0
-      '@codemirror/view': 6.8.0
-      '@fontsource/electrolize': 4.5.8
-      '@fontsource/lexend-deca': 4.5.14
-      '@fontsource/manrope': 4.5.13
-      '@kubernetes/client-node': 0.18.1
-      '@skf/shared': link:../shared
-      '@supabase/auth-helpers-shared': 0.2.4_wwkefq4crizglppdxtjqhrdudm
-      '@supabase/supabase-js': 2.7.1
-      amqplib: 0.10.3
-      astro: 2.0.7_@types+node@18.13.0
-      chart.js: 4.2.0
-      codemirror: 6.0.1
-      marked: 4.2.12
-      rascal: 16.3.0_amqplib@0.10.3
-      svelte: 3.55.1
-    devDependencies:
-      '@iconify-json/fluent': 1.1.17
-      '@iconify-json/fluent-emoji': 1.1.10
-      '@types/amqplib': 0.10.1
-      '@types/marked': 4.0.8
-      '@types/node': 18.13.0
-      '@types/rascal': 10.0.6
-      '@typescript-eslint/eslint-plugin': 5.51.0_b635kmla6dsb4frxfihkw4m47e
-      '@typescript-eslint/parser': 5.51.0_4vsywjlpuriuw3tl5oq6zy5a64
-      dotenv: 16.0.3
-      eslint: 8.33.0
-      eslint-plugin-astro: 0.23.0_eslint@8.33.0
-      eslint-plugin-svelte3: 4.0.0_4omm2ewoudhgnmf7aocafatnc4
-      nanoid: 4.0.1
-      prettier: 2.8.3
-      prettier-plugin-astro: 0.8.0
-      prettier-plugin-svelte: 2.9.0_kdmmghgdi3ngrsq6otxkjilbry
-      supabase: 1.37.1
-      tsx: 3.12.3
-      typescript: 4.9.5
-      unplugin-icons: 0.15.2
-
-  packages/shared:
-    specifiers: {}
-
-  packages/workers:
-    specifiers:
-      '@skf/shared': workspace:^0.0.1
-    dependencies:
-      '@skf/shared': link:../shared
+devDependencies:
+  '@iconify-json/fluent': 1.1.17
+  '@iconify-json/fluent-emoji': 1.1.10
+  '@types/amqplib': 0.10.1
+  '@types/marked': 4.0.8
+  '@types/node': 18.13.0
+  '@types/rascal': 10.0.6
+  '@typescript-eslint/eslint-plugin': 5.51.0_b635kmla6dsb4frxfihkw4m47e
+  '@typescript-eslint/parser': 5.51.0_4vsywjlpuriuw3tl5oq6zy5a64
+  dotenv: 16.0.3
+  eslint: 8.33.0
+  eslint-plugin-astro: 0.23.0_eslint@8.33.0
+  eslint-plugin-svelte3: 4.0.0_4omm2ewoudhgnmf7aocafatnc4
+  nanoid: 4.0.1
+  prettier: 2.8.3
+  prettier-plugin-astro: 0.8.0
+  prettier-plugin-svelte: 2.9.0_kdmmghgdi3ngrsq6otxkjilbry
+  supabase: 1.37.1
+  tsx: 3.12.3
+  typescript: 4.9.5
+  unplugin-icons: 0.15.2
 
 packages:
 

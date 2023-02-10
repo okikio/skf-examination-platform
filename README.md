@@ -65,3 +65,17 @@ gem install sequel
 ```
 
 > I used https://stackoverflow.com/a/46723784 for debugging the `Sequel::AdapterNotFound: LoadError: cannot load such file -- sqlite3`
+>
+
+## Ingress / Sub-domain / Port Deploy
+
+> If you haven't previously added the repo:
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx &&
+helm repo update &&
+
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+    --set rbac.create=true \
+    --set controller.publishService.enabled=true \
+    --set controller.service.externalTrafficPolicy=Local \
+    --set controller.setAsDefaultIngress=true \
+    --set controller.extraArgs.default-ssl-certificate="default/securityknowledgeframework-labs.org"

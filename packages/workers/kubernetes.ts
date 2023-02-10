@@ -1,4 +1,4 @@
-import { autoDetectClient, Reflector } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
+import { autoDetectClient, Reflector, RequestOptions } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
 import {
   CoreV1Api,
   fromService, toService,
@@ -30,8 +30,9 @@ import {
   fromDeploymentSpec, toDeploymentSpec,
   fromDeployment, toDeployment
 } from 'https://deno.land/x/kubernetes_apis@v0.3.2/builtin/apps@v1/mod.ts';
+import { load as dotenv } from "https://deno.land/std@0.177.0/dotenv/mod.ts";
 
-import { config } from '../config.ts';
+import { config } from '@skf/shared/config.ts';
 
 // @deno-types="npm:@types/rascal"
 import rascal from 'rascal';
@@ -42,12 +43,18 @@ const coreApi = new CoreV1Api(kubernetes);
 const appsApi = new AppsV1Api(kubernetes);
 const networkApi = new NetworkingV1Api(kubernetes);
 
-let labs_protocol: string | undefined;
-let labs_domain = Deno.env.get("SKF_LABS_DOMAIN") ?? "";
+const env = await dotenv();
 
-const subdomain_deploy = Deno.env.get("SKF_LABS_DEPLOY_MODE") === "subdomain";
+let labs_protocol: string | undefined;
+let labs_domain = env["SKF_LABS_DOMAIN"] ?? "";
+
+const subdomain_deploy = env["SKF_LABS_DEPLOY_MODE"] === "subdomain";
 if (subdomain_deploy) {
-  [labs_protocol, labs_domain] = /(.*:\/\/)?(.*)/.exec(labs_domain) ?? [];
+  const match = /(.*:\/\/)?(.*)/.exec(labs_domain);
+  if (match) {
+    [, labs_protocol, labs_domain] = match;
+  }
+  
   if (!labs_protocol) {
     labs_protocol = "http://";
   }
@@ -237,11 +244,60 @@ export async function getServiceExposedIP(deployment: string, user_id: string) {
 export async function portForward(deployment: string, user_id: string, ports: number) {
   try {
     const response = coreApi.namespace(user_id);
-    const service = await response.getService(deployment);
-    console.log({ service, serviceMeta: service.metadata, serviceSpec: service.spec, podList: (await response.getPodList())?.items }); 
-    await response.connectGetPodPortforward(deployment, {
-      ports
-    })
+    const podList = await response.getPodList();
+    console.log({ metadata: podList.items.map(x => x.metadata) });
+
+    let runLoop = true
+    while (runLoop) {
+      const test = await waitGetCompletedPodPhase(deployment, user_id)
+      if (test === "Running") {
+        console.log("Pod has started and is running")
+        runLoop = false;
+        break
+      }
+    }
+
+    for (const pod of podList.items) {
+      const resource_name = pod.metadata?.name;
+      const label = pod.metadata?.labels?.app;
+      if (
+        typeof label == "string" &&
+        typeof resource_name == "string" &&
+        label.includes(deployment)
+      ) {
+
+        // const query = new URLSearchParams();
+        // const opts: {
+        //   ports?: number;
+        //   abortSignal?: AbortSignal;
+        // } = { ports }
+        // if (opts["ports"] != null) query.append("ports", String(opts["ports"]));
+        // const resp = await kubernetes.performRequest({
+        //   method: "POST",
+        //   path: `/api/v1/namespaces/${user_id}/pods/${resource_name}/portforward`,
+        //   expectJson: true,
+        //   querystring: query,
+        //   abortSignal: opts.abortSignal,
+        // });
+        // Deno.run({
+        //   cmd: ['kubectl', ]
+        // })
+
+
+        return await response.connectGetPodPortforward(resource_name, {
+          ports
+        })
+
+      //     // const podPhase = pod.status?.phase;
+      //     // if (podPhase === "Running") {
+      //     //   podWatcher.stop();
+      //     //   return podPhase;
+      //     // }
+      }
+    }
+    // await response.connectGetPodPortforward(deployment, {
+    //   ports
+    // })
   } catch (e) {
     throw new Error('Failed to deploy, error port forward!', {
       cause: e
@@ -374,7 +430,9 @@ export async function waitGetCompletedPodPhase(release: string, user_id: string)
         const podPhase = pod.status?.phase;
 
         if (podPhase === "Running") {
-          podWatcher.stop();
+          try {
+            podWatcher.stop();
+          } catch (_e) { }
           return podPhase;
         }
       }
@@ -472,7 +530,8 @@ export async function deployContainer(rpc_body: string) {
     }
   } else {
     const response = await getServiceExposedIP(deployment, user_id)
-    const ports = await getHostPortFromResponse("target-port", response)
+    const ports = await getHostPortFromResponse("node-port", response)
+    
     await portForward(deployment, user_id, Number(ports))
     return ports
   }
