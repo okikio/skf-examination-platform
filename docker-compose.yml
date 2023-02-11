@@ -3,7 +3,7 @@
 version: "2"
 services:
   rabbitmq:
-    container_name: skf-rabbitmq
+    container_name: rabbitmq
     image: rabbitmq:management
     environment:
         - RABBITMQ_DEFAULT_USER=guest
@@ -13,7 +13,7 @@ services:
         - "15672:15672"
 
   nginx:
-    container_name: skf-nginx
+    container_name: nginx
     restart: always
     image: nginx
     volumes:
@@ -22,7 +22,7 @@ services:
       - "80:80"
     
   astro:
-    container_name: skf-astro
+    container_name: astro
     depends_on:
       - "rabbitmq"
       - "nginx"
@@ -30,21 +30,26 @@ services:
     volumes:
       - ./:/app
     image: astro
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: dev
     ports:
       - "3000:3000"
     environment:
-      - FRONTEND_URI=http://localhost
-      - AUTH_METHOD=skiploginprovider
-      - SKF_FLASK_DEBUG=False
-      - SKF_API_URL=skf-api://api
-      - SKF_JWT_SECRET=please_change_this_value_to_be_random
       - SKF_LABS_DOMAIN=http://localhost
       - SKF_LABS_DEPLOY_MODE=port
-      - RABBIT_MQ_CONN_STRING=rabbitmq
       - PUBLIC_SUPABASE_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjc2dmb29hbmtja2ZxcG1jZnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjkwNTYzNDcsImV4cCI6MTk4NDYzMjM0N30.aicU94g4B2IThg69VEhScf37hqJTzOc-FXMvTEX-br4
-    command: 
-      - pnpm --filter=astro dev
+      - RUN_COMMAND="pnpm dev --host"
+    labels:
+      kompose.service.type: LoadBalancer
+    
+  workers:
+    container_name: workers
+    depends_on:
+      - "rabbitmq"
+    restart: always
+    volumes:
+      - ./:/app
+    image: workers
+    environment:
+      - SKF_LABS_DOMAIN=http://localhost
+      - SKF_LABS_DEPLOY_MODE=port
+      - RUN_COMMAND="deno task kubernetes"
+    

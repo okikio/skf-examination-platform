@@ -1,5 +1,5 @@
 // import { delay } from 'https://deno.land/x/delay@v0.2.0/mod.ts';
-import { config } from '../config.ts';
+import { config } from '@skf/shared/config.ts';
 
 // @deno-types="npm:@types/rascal"
 import rascal from 'rascal';
@@ -11,12 +11,6 @@ try {
 
   // Publish a message
   const correlationId = "50_000";
-  // const publication = await broker.publish('deployment_publish', 'Hello World!', {
-  //   options: {
-  //     correlationId
-  //   }
-  // });
-  // publication.on('error', console.error);
 
   // Consume a message
   const subscription = await broker.subscribe('deployment_subscription');
@@ -41,14 +35,6 @@ try {
             }
           });
         }
-        /**
-          , {
-            routingKey: method.routingKey, // props.replyTo,
-            options: {
-              correlationId: props.correlationId,
-            }
-          }
-         */
       }
     })
     .on('error', console.error);

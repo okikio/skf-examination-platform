@@ -10,6 +10,8 @@
       "dev": "docker compose up",
       "start": "docker compose up",
       "kubernetes": "deno run -A ./src/workers/kubernetes.ts",
+      "docker": "pnpm docker:astro && pnpm docker:workers",
+      "docker:workers": "docker build -t workers -f ./packages/workers/Dockerfile .",
       "docker:astro": "docker build -t astro -f ./packages/astro/Dockerfile ."
     },
     "devDependencies": {

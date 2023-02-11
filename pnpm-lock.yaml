@@ -94,7 +94,15 @@ importers:
       unplugin-icons: 0.15.2
 
   packages/shared:
-    specifiers: {}
+    specifiers:
+      '@types/node': ^18.13.0
+      '@types/rascal': ^10.0.6
+      rascal: ^16.3.0
+    dependencies:
+      rascal: 16.3.0
+    devDependencies:
+      '@types/node': 18.13.0
+      '@types/rascal': 10.0.6
 
   packages/workers:
     specifiers:
@@ -4407,6 +4415,27 @@ packages:
 
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+
+  /rascal/16.3.0:
+    resolution: {integrity: sha512-7IDalNzsYxH+HLg29ITUPOEb11/M9mTgWFibku5cOy4vVWRkzgrBmE9FakwPmn5kXHJgwEoHZcXMCiz64A4ppQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      amqplib: '>=0.5.5'
+    dependencies:
+      async: 3.2.4
+      debug: 4.3.4
+      forward-emitter: 0.1.1
+      generic-pool: 3.9.0
+      lodash: 4.17.21
+      lru-cache: 7.14.1
+      safe-json-parse: 4.0.0
+      stashback: 2.0.1
+      superagent: 8.0.9
+      uuid: 8.3.2
+      xregexp: 5.1.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /rascal/16.3.0_amqplib@0.10.3:
     resolution: {integrity: sha512-7IDalNzsYxH+HLg29ITUPOEb11/M9mTgWFibku5cOy4vVWRkzgrBmE9FakwPmn5kXHJgwEoHZcXMCiz64A4ppQ==}

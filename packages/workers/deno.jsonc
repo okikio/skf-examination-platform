@@ -1,4 +1,7 @@
 {
   "importMap": "./import_map.json",
-  
+  "tasks": {
+    "kubernetes": "deno run --allow-read --allow-run=kubectl --allow-net --allow-env ./kubernetes.ts",
+    "deployment": "deno run --allow-read --allow-run=kubectl --allow-net --allow-env ./deployment.ts"
+  }
 }

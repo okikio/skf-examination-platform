@@ -1,4 +1,4 @@
-import { autoDetectClient, Reflector, RequestOptions } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
+import { autoDetectClient, Reflector } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
 import {
   CoreV1Api,
   fromService, toService,
@@ -307,6 +307,7 @@ export async function portForward(deployment: string, user_id: string, ports: nu
 
 export async function getHostPortFromResponse(type: "node-port", response: Service): Promise<number>;
 export async function getHostPortFromResponse(type: "target-port", response: Service): Promise<number | string>;
+// deno-lint-ignore require-await
 export async function getHostPortFromResponse(type: "node-port" | "target-port" = "node-port", response: Service) {
   try {
     let port: string | number = -1;
@@ -432,6 +433,8 @@ export async function waitGetCompletedPodPhase(release: string, user_id: string)
         if (podPhase === "Running") {
           try {
             podWatcher.stop();
+            
+            // deno-lint-ignore no-empty
           } catch (_e) { }
           return podPhase;
         }
