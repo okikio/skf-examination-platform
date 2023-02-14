@@ -9,10 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - secureby.design
-    secretName: secureby.design
+    - secureby.dev
+    secretName: secureby.dev
   rules:
-  - host: secureby.design
+  - host: secureby.dev
     http:
      paths:
      - path: /

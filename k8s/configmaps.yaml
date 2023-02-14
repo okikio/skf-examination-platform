@@ -22,5 +22,6 @@ kind: ConfigMap
 metadata:
   name: rabbitmq
 data:
+  RABBIT_MQ_CONN_STRING: rabbitmq
   RABBITMQ_DEFAULT_USER: guest
   RABBITMQ_DEFAULT_PASS: guest

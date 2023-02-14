@@ -37,17 +37,18 @@ spec:
         runAsUser: 1000
       containers:
         - name: workers
-          image: "workers"
+          image: "localhost:5000/workers:latest"
           imagePullPolicy: Always
           env:
-          -  name: SKF_LABS_DOMAIN
-             valueFrom:
-               configMapKeyRef:
-                 name: astro
-                 key: SKF_LABS_DOMAIN
-          -  name: SKF_LABS_DEPLOY_MODE
-             valueFrom:
-               configMapKeyRef:
-                 name: astro
-                 key: SKF_LABS_DEPLOY_MODE
+            - name: SKF_LABS_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: astro
+                  key: SKF_LABS_DOMAIN
+            - name: SKF_LABS_DEPLOY_MODE
+              valueFrom:
+                configMapKeyRef:
+                  name: astro
+                  key: SKF_LABS_DEPLOY_MODE
 ---
+

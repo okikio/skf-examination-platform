@@ -13,6 +13,9 @@ function defineConfig(config: BrokerConfig) {
 
 // const creds = { username: "admin", password: "admin-skf-secret" };
 export const RABBIT_MQ_CONN_STRING = process?.env?.["RABBIT_MQ_CONN_STRING"] || 'localhost';
+console.log({
+  RABBIT_MQ_CONN_STRING
+})
 export const RABBITMQ_DEFAULT_USER = process?.env?.["RABBITMQ_DEFAULT_USER"] || 'guest';
 export const RABBITMQ_DEFAULT_PASS = process?.env?.["RABBITMQ_DEFAULT_PASS"] || 'guest';
 
