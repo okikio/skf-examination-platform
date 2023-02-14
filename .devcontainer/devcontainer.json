@@ -15,7 +15,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"denoland.vscode-deno"
+				"denoland.vscode-deno",
+				"ms-vscode-remote.remote-containers"
 			]
 		}
 	}
