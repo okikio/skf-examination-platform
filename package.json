@@ -1,21 +1,26 @@
 {
-    "name": "root",
-    "type": "module",
-    "version": "0.0.1",
-    "private": true,
-    "engines": {
-      "node": ">=18.0.0"
-    },
-    "scripts": {
-      "dev": "docker compose up",
-      "start": "docker compose up",
-      "kubernetes": "deno run -A ./src/workers/kubernetes.ts",
-      "docker": "pnpm docker:astro && pnpm docker:workers",
-      "docker:workers": "docker build -t workers -f ./packages/workers/Dockerfile .",
-      "docker:astro": "docker build -t astro -f ./packages/astro/Dockerfile ."
-    },
-    "devDependencies": {
-      "typescript": "^4.9.5"
-    }
+  "name": "root",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "docker compose up --remove-orphans",
+    "start": "docker compose up --remove-orphans",
+    "kubernetes": "kubectl apply -f ./k8s/kind.yaml",
+    "labs": "pnpm --filter=workers exec -- deno task kubernetes",
+    "kompose": "kompose convert --out ./k8s/kind.yaml",
+    "docker": "pnpm docker:astro && pnpm docker:workers",
+    "docker:workers": "docker build -t workers -f ./packages/workers/Dockerfile --target prod .",
+    "docker:astro": "docker build -t astro -f ./packages/astro/Dockerfile --target prod ."
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5",
+    "ultra-runner": "^3.10.5"
+  },
+  "ultra": {
+    "concurrent": ["docker"]
   }
-  
+}

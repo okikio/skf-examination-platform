@@ -40,7 +40,7 @@ spec:
         runAsUser: 100
       containers:
         - name: astro
-          image: "blabla1337/skf-angular:4.1.0"
+          image: "astro"
           imagePullPolicy: Always
           ports:
           - containerPort: 3000
@@ -60,27 +60,4 @@ spec:
                configMapKeyRef:
                  name: astro
                  key: PUBLIC_SUPABASE_API_KEY
-        
-
-        # astro:
-        #   container_name: astro
-        #   depends_on:
-        #     - "rabbitmq"
-        #     - "nginx"
-        #   restart: always
-        #   volumes:
-        #     - ./:/app
-        #   image: astro
-        #   build:
-        #     context: .
-        #     dockerfile: Dockerfile
-        #     target: dev
-        #   ports:
-        #     - "3000:3000"
-        #   environment:
-        #     - SKF_LABS_DOMAIN=http://localhost
-        #     - SKF_LABS_DEPLOY_MODE=port
-        #     - PUBLIC_SUPABASE_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjc2dmb29hbmtja2ZxcG1jZnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjkwNTYzNDcsImV4cCI6MTk4NDYzMjM0N30.aicU94g4B2IThg69VEhScf37hqJTzOc-FXMvTEX-br4
-        #   command: 
-        #     - pnpm --filter=astro dev --host
 ---

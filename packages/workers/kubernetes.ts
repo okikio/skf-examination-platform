@@ -122,9 +122,7 @@ export async function createUserNamespace(user_id: string) {
     try {
       await coreApi.getNamespace(user_id);
       return;
-
-      // deno-lint-ignore no-empty
-    } catch (_e) { }
+    } catch (_e) { /* empty */ }
 
     console.log({
       namespace: body
@@ -213,9 +211,7 @@ export async function createDeployment(deployment: Deployment, user_id: string) 
     try {
       const existingDeployment = await namespace.getDeployment(deploymentName);
       return existingDeployment
-
-      // deno-lint-ignore no-empty
-    } catch (_e) { }
+    } catch (_e) { /* empty */ }
 
     const response = await namespace.createDeployment(deployment);
     return response
@@ -396,11 +392,9 @@ export async function createIngress(networking_v1_api: NetworkingV1Api, hostname
     // (Can replace "default" with a namespace you may have created)
     const response = networking_v1_api.namespace(user_id);
     try {
-      const ingressName = body.metadata?.name! as `ingress-${string}`;
+      const ingressName = body.metadata?.name as `ingress-${string}`;
       await response.getIngress(ingressName);
-
-      // deno-lint-ignore no-empty
-    } catch (_e) { }
+    } catch (_e) { /* empty */ }
 
     await response.createIngress(body);
     return null;
@@ -433,9 +427,7 @@ export async function waitGetCompletedPodPhase(release: string, user_id: string)
         if (podPhase === "Running") {
           try {
             podWatcher.stop();
-            
-            // deno-lint-ignore no-empty
-          } catch (_e) { }
+          } catch (_e) { /* empty */ }
           return podPhase;
         }
       }

@@ -11,6 +11,8 @@ spec:
   ports:
     - port: 5672
       name: rabbitmq
+    - port: 15672
+      name: rabbitmq-management
   selector:
     app.kubernetes.io/name: rabbitmq
     app.kubernetes.io/instance: rabbitmq

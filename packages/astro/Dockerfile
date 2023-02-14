@@ -1,11 +1,9 @@
-FROM node:19-alpine
+FROM node:19-alpine as base
 
 ENV SHELL=/bin/sh
-ENV RUN_COMMAND="pnpm build && pnpm start:server"
 EXPOSE 3000
 
 ENTRYPOINT ["/bin/sh", "-c"]
-
 RUN npm i -g pnpm
 WORKDIR /app
 
@@ -19,5 +17,11 @@ CMD ["node"]
 # Prefer not to run as root.
 USER node
 
-RUN cd packages/astro/ && \
-    ${RUN_COMMAND}
+# Production Target
+FROM base as prod
+RUN pnpm --filter=astro build
+CMD [ "pnpm", "--filter=astro", "start:server" ] 
+
+# Development Target
+FROM base as dev
+CMD [ "pnpm", "--filter=astro", "dev" ] 

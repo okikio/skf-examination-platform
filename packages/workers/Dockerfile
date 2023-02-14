@@ -1,7 +1,6 @@
-FROM denoland/deno:alpine
+FROM denoland/deno:alpine as base
 
 ENV SHELL=/bin/sh
-ENV RUN_COMMAND="deno task deployment"
 
 ENTRYPOINT ["/bin/sh", "-c"]
 
@@ -15,4 +14,14 @@ COPY packages/shared /app/packages/shared
 # Prefer not to run as root.
 USER deno
 
-# RUN cd /app/packages/workers && ${RUN_COMMAND}
+RUN cd /app/packages/workers && \
+    deno task hello && \
+    deno cache ./kubernetes.ts
+
+FROM base as prod
+WORKDIR /app/packages/workers
+CMD ["deno", "task", "kubernetes"]
+
+FROM base as debug
+WORKDIR /app/packages/workers
+CMD ["deno", "task", "deployment"]

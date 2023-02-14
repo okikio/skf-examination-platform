@@ -22,6 +22,7 @@ RUN brew install kind
 RUN brew install kubectl
 RUN brew install minikube
 RUN brew install helm
+RUN brew install kompose
 
 RUN bash -c 'VERSION="19" \
     && source $HOME/.nvm/nvm.sh && nvm install $VERSION \

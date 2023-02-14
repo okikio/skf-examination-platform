@@ -9,7 +9,8 @@
 		"ghcr.io/devcontainers-contrib/features/pnpm:2": {},
 		"ghcr.io/devcontainers-contrib/features/deno:1": {},
 		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-		"ghcr.io/mpriscella/features/kind:1": {}
+		"ghcr.io/mpriscella/features/kind:1": {},
+		"ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
 	},
 	"customizations": {
 		"vscode": {

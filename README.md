@@ -79,3 +79,14 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
     --set controller.service.externalTrafficPolicy=Local \
     --set controller.setAsDefaultIngress=true \
     --set controller.extraArgs.default-ssl-certificate="default/securityknowledgeframework-labs.org"
+
+
+## Convert from docker-compose to kubernetes
+
+Install `kompose` ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/#install-kompose))
+
+```sh
+brew install kompose
+```
+
+To convert a `docker-compose.yml` file you simply run `pnpm kompose`
