@@ -40,7 +40,7 @@ spec:
         runAsUser: 100
       containers:
         - name: astro
-          image: "astro"
+          image: "skf/astro"
           imagePullPolicy: Never
           ports:
           - containerPort: 3000
