@@ -11,9 +11,6 @@ WORKDIR /app
 COPY packages/workers /app/packages/workers
 COPY packages/shared /app/packages/shared
 
-# Prefer not to run as root.
-USER deno
-
 RUN cd /app/packages/workers && \
     deno task hello && \
     deno cache ./kubernetes.ts
@@ -25,3 +22,6 @@ CMD ["deno", "task", "kubernetes"]
 FROM base as debug
 WORKDIR /app/packages/workers
 CMD ["deno", "task", "deployment"]
+
+# Prefer not to run as root.
+USER deno

@@ -14,9 +14,6 @@ COPY . ./
 RUN pnpm recursive install --offline --frozen-lockfile
 CMD ["node"]
 
-# Prefer not to run as root.
-USER node
-
 # Production Target
 FROM base as prod
 RUN pnpm --filter=astro build
@@ -25,3 +22,6 @@ CMD [ "pnpm", "--filter=astro", "start:server" ]
 # Development Target
 FROM base as dev
 CMD [ "pnpm", "--filter=astro", "dev" ] 
+
+# Prefer not to run as root.
+# USER node
