@@ -38,12 +38,21 @@ brew install kompose
 Step 4. Install `nvm` and `node` 19
 
 ```sh
-export VERSION="19" && 
-source $HOME/.nvm/nvm.sh && 
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+```
 
+```sh
+VERSION=19 &&
 nvm install $VERSION && 
 nvm use $VERSION && 
 nvm alias default $VERSION
+```
+
+Step 5. Install `pnpm`
+
+```sh
+npm install --global pnpm &&
+pnpm install --recursive
 ```
 
 ## Running Locally
