@@ -15,8 +15,8 @@
     "dev:astro": "pnpm --filter=astro dev",
     "kompose": "kompose convert --out ./k8s/kind.yaml",
     "docker": "pnpm docker:astro && pnpm docker:workers",
-    "docker:workers": "docker build -t workers -f ./packages/workers/Dockerfile --target prod .",
-    "docker:astro": "docker build -t astro -f ./packages/astro/Dockerfile --target prod ."
+    "docker:workers": "docker build -t skf/workers -f ./packages/workers/Dockerfile --target prod .",
+    "docker:astro": "docker build -t skf/astro -f ./packages/astro/Dockerfile --target prod ."
   },
   "devDependencies": {
     "typescript": "^4.9.5"
