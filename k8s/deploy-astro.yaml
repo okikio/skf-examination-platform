@@ -40,8 +40,8 @@ spec:
         runAsUser: 100
       containers:
         - name: astro
-          image: "localhost:5000/astro:latest"
-          imagePullPolicy: Always
+          image: "astro"
+          imagePullPolicy: Never
           ports:
           - containerPort: 3000
           env:

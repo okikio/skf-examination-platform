@@ -27,5 +27,6 @@
         "deploy*.yaml"
       ],
     },
+    "chatgpt.gpt3.model": "text-davinci-002-render",
   }
 }

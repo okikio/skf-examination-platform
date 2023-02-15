@@ -37,8 +37,8 @@ spec:
         runAsUser: 1000
       containers:
         - name: workers
-          image: "localhost:5000/workers:latest"
-          imagePullPolicy: Always
+          image: "workers"
+          imagePullPolicy: Never
           env:
             - name: SKF_LABS_DOMAIN
               valueFrom:
