@@ -37,7 +37,7 @@ spec:
         runAsUser: 1000
       containers:
         - name: workers
-          image: "skf/workers"
+          image: "workers:skf"
           imagePullPolicy: Never
           env:
             - name: SKF_LABS_DOMAIN

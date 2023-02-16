@@ -1,9 +1,5 @@
 FROM denoland/deno:alpine as base
 
-ENV SHELL=/bin/sh
-
-ENTRYPOINT ["/bin/sh", "-c"]
-
 WORKDIR /app
 
 # Cache the dependencies as a layer (the following two steps are re-run only when deps.ts is modified).
@@ -24,4 +20,4 @@ WORKDIR /app/packages/workers
 CMD ["deno", "task", "deployment"]
 
 # Prefer not to run as root.
-USER deno
+#USER deno

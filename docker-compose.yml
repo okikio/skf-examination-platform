@@ -17,7 +17,7 @@ services:
 
   astro:
     container_name: astro
-    image: skf/astro
+    image: astro:skf
     build: 
       context: .
       dockerfile: ./packages/astro
@@ -40,7 +40,7 @@ services:
 
   workers:
     container_name: workers
-    image: skf/workers
+    image: workers:skf
     build: 
       context: .
       dockerfile: ./packages/workers

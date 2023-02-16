@@ -72,7 +72,13 @@ Step 2. Build `astro` & `workers` Docker container
 pnpm docker
 ```
 
-Step 3. Start `kubernetes`
+Step 3. Load local docker images in `kubernetes`
+
+```sh
+pnpm kind:load
+```
+
+Step 4. Start `kubernetes`
 
 ```sh
 pnpm start
