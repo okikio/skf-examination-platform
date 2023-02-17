@@ -6,6 +6,9 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "workspaces": [
+    "packages"
+  ],
   "scripts": {
     "dev": "docker compose up --remove-orphans",
     "start": "sh ./scripts/kubernetes-sh.sh",
