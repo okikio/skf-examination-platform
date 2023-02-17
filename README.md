@@ -60,10 +60,7 @@ pnpm install --recursive
 Step 1. Create cluster
 
 ```sh
-kind delete cluster &&
-kind create cluster &&
-kind get clusters &&
-kubectl cluster-info --context kind-kind 
+pnpm kind:create
 ```
 
 Step 2. Build `astro` & `workers` Docker container

@@ -10,18 +10,18 @@ COPY . ./
 RUN pnpm recursive install --offline --frozen-lockfile
 RUN pnpm --filter=astro build
 
-# Production Target
-FROM base as prod
-COPY --from=base /app/packages/astro /packages/astro
-EXPOSE 3000
-CMD [ "pnpm", "--filter=astro", "start:server" ] 
-
 # Development Target
 FROM base as dev
-COPY --from=base /app/packages/astro /packages/astro
+# COPY --from=base /app/packages/astro /packages/astro
 EXPOSE 3000
 #CMD [ "pnpm", "--filter=astro", "dev" ] 
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "-c"]
+
+# Production Target
+FROM base as prod
+# COPY --from=base /app/packages/astro /packages/astro
+EXPOSE 3000
+CMD [ "pnpm", "--filter=astro", "start:server" ] 
 
 # Prefer not to run as root.
 # USER node
