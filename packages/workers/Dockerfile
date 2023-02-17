@@ -15,9 +15,9 @@ COPY packages/workers /home/foobar/packages/workers
 COPY packages/shared /home/foobar/packages/shared
 COPY node_modules /home/foobar/node_modules
 
-RUN chown -R foobar:foobar /home/foobar/node_modules
-RUN chown -R foobar:foobar /home/foobar/packages/shared
-RUN chown -R foobar:foobar /home/foobar/packages/workers
+RUN chown -R foobar:wheel /home/foobar/node_modules
+RUN chown -R foobar:wheel /home/foobar/packages/shared
+RUN chown -R foobar:wheel /home/foobar/packages/workers
 
 #RUN cd /app/packages/workers && \
 #    deno task hello && \
