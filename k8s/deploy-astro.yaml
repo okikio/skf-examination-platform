@@ -45,15 +45,30 @@ spec:
           ports:
           - containerPort: 3000
           env:
+          -  name: RABBIT_MQ_CONN_STRING
+             valueFrom:
+               configMapKeyRef:
+                 name: rabbitmq
+                 key: RABBIT_MQ_CONN_STRING
+          -  name: RABBITMQ_DEFAULT_USER
+             valueFrom:
+               configMapKeyRef:
+                 name: rabbitmq
+                 key: RABBITMQ_DEFAULT_USER
+          -  name: RABBITMQ_DEFAULT_PASS
+             valueFrom:
+               configMapKeyRef:
+                 name: rabbitmq
+                 key: RABBITMQ_DEFAULT_PASS
           -  name: SKF_LABS_DOMAIN
              valueFrom:
                configMapKeyRef:
-                 name: astro
+                 name: workers
                  key: SKF_LABS_DOMAIN
           -  name: SKF_LABS_DEPLOY_MODE
              valueFrom:
                configMapKeyRef:
-                 name: astro
+                 name: workers
                  key: SKF_LABS_DEPLOY_MODE
           -  name: PUBLIC_SUPABASE_API_KEY
              valueFrom:

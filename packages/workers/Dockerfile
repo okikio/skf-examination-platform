@@ -26,18 +26,18 @@ RUN chown -R deno:wheel /home/deno/packages
 
 FROM base as prod
 USER deno
+CMD ["deno", "task", "kubernetes"]
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 #WORKDIR /app/packages/workers
-#CMD ["deno", "task", "kubernetes"]
 
 FROM base as debug
 USER deno
+CMD ["deno", "task", "deployment"]
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 
 #WORKDIR /app/packages/workers
 #CMD ["/bin/bash", "top"]
-#CMD ["deno", "task", "deployment"]
 
 # Prefer not to run as root.
 #USER deno

@@ -1,4 +1,5 @@
-import { autoDetectClient, Reflector } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
+import { Reflector, ClientProviderChain, KubectlRawRestClient, KubeConfigRestClient, KubeConfig } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
+import type { RestClient } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
 import {
   CoreV1Api,
   fromService, toService,
@@ -38,12 +39,32 @@ import { config } from '@skf/shared/config.ts';
 import rascal from 'rascal';
 const { createBrokerAsPromised } = rascal;
 
+const env = await dotenv();
+
+export const DefaultClientProvider = new ClientProviderChain([
+  ['InCluster', () => KubeConfigRestClient.forInCluster()],
+  ['KubeConfig', () => KubeConfigRestClient.readKubeConfig()],
+  ['KubectlProxy', () => KubeConfigRestClient.forKubeConfig(
+    KubeConfig.getSimpleUrlConfig({
+      baseUrl: `http://${env["KUBERNETES_HOST"] ?? "localhost"}:8001`,
+    })
+  )], // KubeConfigRestClient.forKubectlProxy()
+  ['KubectlRaw', async () => new KubectlRawRestClient()],
+]);
+
+/**
+ * Trial-and-error approach for automatically deciding how to talk to Kubernetes.
+ * You'll still need to set the correct permissions for where you are running.
+ * You can probably be more specific and secure with app-specific Deno.args flags.
+ */
+export async function autoDetectClient(): Promise<RestClient> {
+  return DefaultClientProvider.getClient();
+}
+
 const kubernetes = await autoDetectClient();
 const coreApi = new CoreV1Api(kubernetes);
 const appsApi = new AppsV1Api(kubernetes);
 const networkApi = new NetworkingV1Api(kubernetes);
-
-const env = await dotenv();
 
 let labs_protocol: string | undefined;
 let labs_domain = env["SKF_LABS_DOMAIN"] ?? "";

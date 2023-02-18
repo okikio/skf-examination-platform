@@ -40,15 +40,35 @@ spec:
           image: "workers:skf"
           imagePullPolicy: Never
           env:
-            - name: SKF_LABS_DOMAIN
-              valueFrom:
-                configMapKeyRef:
-                  name: astro
-                  key: SKF_LABS_DOMAIN
-            - name: SKF_LABS_DEPLOY_MODE
-              valueFrom:
-                configMapKeyRef:
-                  name: astro
-                  key: SKF_LABS_DEPLOY_MODE
+          -  name: RABBIT_MQ_CONN_STRING
+             valueFrom:
+               configMapKeyRef:
+                 name: rabbitmq
+                 key: RABBIT_MQ_CONN_STRING
+          -  name: RABBITMQ_DEFAULT_USER
+             valueFrom:
+               configMapKeyRef:
+                 name: rabbitmq
+                 key: RABBITMQ_DEFAULT_USER
+          -  name: RABBITMQ_DEFAULT_PASS
+             valueFrom:
+               configMapKeyRef:
+                 name: rabbitmq
+                 key: RABBITMQ_DEFAULT_PASS
+          -  name: KUBERNETES_HOST
+             valueFrom:
+               configMapKeyRef:
+                 name: workers
+                 key: KUBERNETES_HOST
+          -  name: SKF_LABS_DOMAIN
+             valueFrom:
+               configMapKeyRef:
+                 name: workers
+                 key: SKF_LABS_DOMAIN
+          -  name: SKF_LABS_DEPLOY_MODE
+             valueFrom:
+               configMapKeyRef:
+                 name: workers
+                 key: SKF_LABS_DEPLOY_MODE
 ---
 
