@@ -1,4 +1,4 @@
-import { Reflector, ClientProviderChain, KubectlRawRestClient, KubeConfigRestClient, KubeConfig } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
+import { Reflector, autoDetectClient } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
 import type { RestClient } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
 import {
   CoreV1Api,
@@ -47,27 +47,8 @@ function getEnv(name: string) {
 
 console.log({ host: getEnv("KUBERNETES_HOST") })
 
-export const DefaultClientProvider = new ClientProviderChain([
-  ['InCluster', () => KubeConfigRestClient.forInCluster()],
-  ['KubeConfig', () => KubeConfigRestClient.readKubeConfig()],
-  ['KubectlProxy', () => KubeConfigRestClient.forKubeConfig(
-    KubeConfig.getSimpleUrlConfig({
-      baseUrl: `http://${getEnv("KUBERNETES_HOST") ?? "localhost"}:8001`,
-    })
-  )], // KubeConfigRestClient.forKubectlProxy()
-  ['KubectlRaw', async () => new KubectlRawRestClient()],
-]);
-
-/**
- * Trial-and-error approach for automatically deciding how to talk to Kubernetes.
- * You'll still need to set the correct permissions for where you are running.
- * You can probably be more specific and secure with app-specific Deno.args flags.
- */
-export async function autoDetectClient(): Promise<RestClient> {
-  return DefaultClientProvider.getClient();
-}
-
 const kubernetes = await autoDetectClient();
+console.log({ host: getEnv("KUBERNETES_HOST") })
 const coreApi = new CoreV1Api(kubernetes);
 const appsApi = new AppsV1Api(kubernetes);
 const networkApi = new NetworkingV1Api(kubernetes);
