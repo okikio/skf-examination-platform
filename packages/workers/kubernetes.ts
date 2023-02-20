@@ -41,12 +41,18 @@ const { createBrokerAsPromised } = rascal;
 
 const env = await dotenv();
 
+function getEnv(name: string) { 
+  return env[name] ?? Deno.env.get(name);
+}
+
+console.log({ host: getEnv("KUBERNETES_HOST") })
+
 export const DefaultClientProvider = new ClientProviderChain([
   ['InCluster', () => KubeConfigRestClient.forInCluster()],
   ['KubeConfig', () => KubeConfigRestClient.readKubeConfig()],
   ['KubectlProxy', () => KubeConfigRestClient.forKubeConfig(
     KubeConfig.getSimpleUrlConfig({
-      baseUrl: `http://${env["KUBERNETES_HOST"] ?? "localhost"}:8001`,
+      baseUrl: `http://${getEnv("KUBERNETES_HOST") ?? "localhost"}:8001`,
     })
   )], // KubeConfigRestClient.forKubectlProxy()
   ['KubectlRaw', async () => new KubectlRawRestClient()],
@@ -67,9 +73,9 @@ const appsApi = new AppsV1Api(kubernetes);
 const networkApi = new NetworkingV1Api(kubernetes);
 
 let labs_protocol: string | undefined;
-let labs_domain = env["SKF_LABS_DOMAIN"] ?? "";
+let labs_domain = getEnv("SKF_LABS_DOMAIN") ?? "";
 
-const subdomain_deploy = env["SKF_LABS_DEPLOY_MODE"] === "subdomain";
+const subdomain_deploy = getEnv("SKF_LABS_DEPLOY_MODE") === "subdomain";
 if (subdomain_deploy) {
   const match = /(.*:\/\/)?(.*)/.exec(labs_domain);
   if (match) {
