@@ -8,7 +8,7 @@ COPY packages/workers /app/packages/workers
 COPY packages/shared /app/packages/shared
 
 # Prefer not to run as root.
-USER deno
+# USER deno
 
 RUN cd /app/packages/workers && \
     deno task hello && \
@@ -16,12 +16,8 @@ RUN cd /app/packages/workers && \
 
 FROM base as prod
 WORKDIR /app/packages/workers
-# CMD ["deno", "task", "kubernetes"] 
-# ENTRYPOINT [ "/bin/sh", "-c", "deno task hello"  ]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
+CMD ["deno", "task", "kubernetes"]
 
 FROM base as debug
 WORKDIR /app/packages/workers
-# CMD ["deno", "task", "deployment"]
-# ENTRYPOINT [ "/bin/sh", "-c", "deno task hello" ]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
+CMD ["deno", "task", "deployment"]
