@@ -16,10 +16,10 @@
     "start:astro": "pnpm --filter=astro start:server",
     "build:astro": "pnpm --filter=astro build",
     "dev:astro": "pnpm --filter=astro dev",
-    "kompose": "kompose convert --out ./k8s/kind.yaml",
+    "kompose": "kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml",
     "docker": "pnpm docker:astro && pnpm docker:workers",
     "docker:workers": "docker build -t workers:skf -f ./packages/workers/Dockerfile --target prod . --no-cache",
-    "docker:astro": "docker build -t astro:skf -f ./packages/astro/Dockerfile --target dev . --no-cache",
+    "docker:astro": "docker build -t astro:skf -f ./packages/astro/Dockerfile .",
     "kind:load": "kind load docker-image workers:skf astro:skf",
     "kind:create": "sh ./scripts/cluster-create-sh.sh"
   },

@@ -1,0 +1,386 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+    kompose.image-pull-policy: Never
+    kompose.service.nodeport.port: "3000"
+    kompose.service.type: nodeport
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: astro
+  name: astro
+spec:
+  ports:
+    - name: "3000"
+      port: 3000
+  selector:
+    io.kompose.service: astro
+  type: NodePort
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+    kompose.service.expose: "true"
+    kompose.service.expose.ingress-class-name: nginx
+    kompose.service.type: nodeport
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+  selector:
+    io.kompose.service: nginx
+  type: NodePort
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+    kompose.image-pull-policy: IfNotPresent
+    kompose.service.type: nodeport
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rabbitmq
+  name: rabbitmq
+spec:
+  ports:
+    - name: "5672"
+      port: 5672
+      targetPort: 5672
+    - name: "15672"
+      port: 15672
+      targetPort: 15672
+  selector:
+    io.kompose.service: rabbitmq
+  type: NodePort
+status:
+  loadBalancer: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+    kompose.image-pull-policy: Never
+    kompose.service.nodeport.port: "3000"
+    kompose.service.type: nodeport
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: astro
+  name: astro
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: astro
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+        kompose.image-pull-policy: Never
+        kompose.service.nodeport.port: "3000"
+        kompose.service.type: nodeport
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docker-default: "true"
+        io.kompose.service: astro
+    spec:
+      containers:
+        - env:
+            - name: PUBLIC_SUPABASE_API_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjc2dmb29hbmtja2ZxcG1jZnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjkwNTYzNDcsImV4cCI6MTk4NDYzMjM0N30.aicU94g4B2IThg69VEhScf37hqJTzOc-FXMvTEX-br4
+            - name: RABBITMQ_DEFAULT_PASS
+              value: guest
+            - name: RABBITMQ_DEFAULT_USER
+              value: guest
+            - name: RABBIT_MQ_CONN_STRING
+              value: rabbitmq
+            - name: SKF_LABS_DEPLOY_MODE
+              value: port
+            - name: SKF_LABS_DOMAIN
+              value: http://localhost
+          image: astro:skf
+          imagePullPolicy: Never
+          name: astro
+          ports:
+            - containerPort: 3000
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: astro-claim0
+      restartPolicy: Always
+      volumes:
+        - name: astro-claim0
+          persistentVolumeClaim:
+            claimName: astro-claim0
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: astro-claim0
+  name: astro-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  creationTimestamp: null
+  name: docker-default
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              io.kompose.network/docker-default: "true"
+  podSelector:
+    matchLabels:
+      io.kompose.network/docker-default: "true"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+    kompose.service.expose: "true"
+    kompose.service.expose.ingress-class-name: nginx
+    kompose.service.type: nodeport
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+        kompose.service.expose: "true"
+        kompose.service.expose.ingress-class-name: nginx
+        kompose.service.type: nodeport
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docker-default: "true"
+        io.kompose.service: nginx
+    spec:
+      containers:
+        - image: nginx
+          name: nginx
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: nginx-claim0
+      restartPolicy: Always
+      volumes:
+        - name: nginx-claim0
+          persistentVolumeClaim:
+            claimName: nginx-claim0
+status: {}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+    kompose.service.expose: "true"
+    kompose.service.expose.ingress-class-name: nginx
+    kompose.service.type: nodeport
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx-claim0
+  name: nginx-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+    kompose.image-pull-policy: IfNotPresent
+    kompose.service.type: nodeport
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rabbitmq
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: rabbitmq
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+        kompose.image-pull-policy: IfNotPresent
+        kompose.service.type: nodeport
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docker-default: "true"
+        io.kompose.service: rabbitmq
+    spec:
+      containers:
+        - env:
+            - name: RABBITMQ_DEFAULT_PASS
+              value: guest
+            - name: RABBITMQ_DEFAULT_USER
+              value: guest
+          image: rabbitmq:management
+          imagePullPolicy: IfNotPresent
+          name: rabbitmq
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+          resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+    kompose.image-pull-policy: Never
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: workers
+  name: workers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: workers
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./.docker/docker-compose.yml --out ./k8s/kind.yml
+        kompose.image-pull-policy: Never
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docker-default: "true"
+        io.kompose.service: workers
+    spec:
+      containers:
+        - env:
+            - name: RABBITMQ_DEFAULT_PASS
+              value: guest
+            - name: RABBITMQ_DEFAULT_USER
+              value: guest
+            - name: RABBIT_MQ_CONN_STRING
+              value: rabbitmq
+            - name: SKF_LABS_DEPLOY_MODE
+              value: port
+            - name: SKF_LABS_DOMAIN
+              value: http://localhost
+          image: workers:skf
+          imagePullPolicy: Never
+          name: workers
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: workers-claim0
+      restartPolicy: Always
+      volumes:
+        - name: workers-claim0
+          persistentVolumeClaim:
+            claimName: workers-claim0
+status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: workers-claim0
+  name: workers-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+

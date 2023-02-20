@@ -18,10 +18,6 @@ services:
   astro:
     container_name: astro
     image: astro:skf
-    build: 
-      context: .
-      dockerfile: ./packages/astro
-      target: prod
     depends_on:
       - "rabbitmq"
     restart: always
@@ -32,19 +28,17 @@ services:
     environment:
       - SKF_LABS_DOMAIN=http://localhost
       - SKF_LABS_DEPLOY_MODE=port
+      - RABBIT_MQ_CONN_STRING=rabbitmq
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
       - PUBLIC_SUPABASE_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjc2dmb29hbmtja2ZxcG1jZnliIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjkwNTYzNDcsImV4cCI6MTk4NDYzMjM0N30.aicU94g4B2IThg69VEhScf37hqJTzOc-FXMvTEX-br4
     labels:
       kompose.service.type: nodeport
-      kompose.service.nodeport.port: 30000
-      kompose.image-pull-policy: Always
+      kompose.image-pull-policy: Never
 
   workers:
     container_name: workers
     image: workers:skf
-    build: 
-      context: .
-      dockerfile: ./packages/workers
-      target: prod
     depends_on:
       - "rabbitmq"
     restart: always
@@ -53,11 +47,14 @@ services:
     environment:
       - SKF_LABS_DOMAIN=http://localhost
       - SKF_LABS_DEPLOY_MODE=port
-    command:
-      - cd packages/workers
-      - deno task kubernetes
+      - RABBIT_MQ_CONN_STRING=rabbitmq
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    # command:
+    #   - cd packages/workers
+    #   - deno task kubernetes
     labels:
-      kompose.image-pull-policy: Always
+      kompose.image-pull-policy: Never
 
   nginx:
     container_name: nginx
