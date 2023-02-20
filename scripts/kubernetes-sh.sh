@@ -3,6 +3,17 @@ for yaml in k8s/*.yaml; do
     kubectl apply -f $yaml;
 done
 
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.crds.yaml
+
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.11.0 \
+  # --set installCRDs=true
+
 # helm repo add nginx-stable https://helm.nginx.com/stable
 # helm repo update
 # helm install nginx-ingress nginx-stable/nginx-ingress  \

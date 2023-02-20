@@ -4,16 +4,17 @@ metadata:
   name: "ingress-controller"
   namespace: "default"
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  #   nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
-  tls:
-  - hosts:
-    - secureby.dev
-    secretName: secureby.dev
+  # tls:
+  # - hosts:
+  #   - secureby.dev
+  #   secretName: secureby.dev
   rules:
-  - host: secureby.dev
-    http:
+  # - host: secureby.dev
+  - http:
      paths:
      - path: /
        pathType: Prefix

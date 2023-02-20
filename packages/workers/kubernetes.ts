@@ -1,12 +1,11 @@
-import { Reflector, autoDetectClient } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
-import type { RestClient } from 'https://deno.land/x/kubernetes_client@v0.3.2/mod.ts';
+import { Reflector, autoDetectClient } from 'https://deno.land/x/kubernetes_client/mod.ts';
 import {
   CoreV1Api,
   fromService, toService,
   fromServicePort, toServicePort,
   fromNamespace, toNamespace,
-} from "https://deno.land/x/kubernetes_apis@v0.3.2/builtin/core@v1/mod.ts";
-import { fromObjectMeta, toObjectMeta } from 'https://deno.land/x/kubernetes_apis@v0.3.2/builtin/meta@v1/structs.ts';
+} from "https://deno.land/x/kubernetes_apis/builtin/core@v1/mod.ts";
+import { fromObjectMeta, toObjectMeta } from 'https://deno.land/x/kubernetes_apis/builtin/meta@v1/structs.ts';
 import {
   NetworkingV1Api,
   fromIngressSpec, toIngressSpec,
@@ -17,21 +16,21 @@ import {
   fromIngressBackend, toIngressBackend,
   fromIngressServiceBackend, toIngressServiceBackend,
   fromServiceBackendPort, toServiceBackendPort
-} from "https://deno.land/x/kubernetes_apis@v0.3.2/builtin/networking.k8s.io@v1/mod.ts";
+} from "https://deno.land/x/kubernetes_apis/builtin/networking.k8s.io@v1/mod.ts";
 import {
   fromPodSpec, toPodSpec,
   fromPodTemplateSpec, toPodTemplateSpec,
   fromContainer, toContainer,
   fromContainerPort, toContainerPort,
   type Service
-} from 'https://deno.land/x/kubernetes_apis@v0.3.2/builtin/core@v1/structs.ts';
+} from 'https://deno.land/x/kubernetes_apis/builtin/core@v1/structs.ts';
 import {
   type Deployment,
   AppsV1Api,
   fromDeploymentSpec, toDeploymentSpec,
   fromDeployment, toDeployment
-} from 'https://deno.land/x/kubernetes_apis@v0.3.2/builtin/apps@v1/mod.ts';
-import { load as dotenv } from "https://deno.land/std@0.177.0/dotenv/mod.ts";
+} from 'https://deno.land/x/kubernetes_apis/builtin/apps@v1/mod.ts';
+import { load as dotenv } from "https://deno.land/std/dotenv/mod.ts";
 
 import { config } from '@skf/shared/config.ts';
 
@@ -45,12 +44,10 @@ function getEnv(name: string) {
   return env[name] ?? Deno.env.get(name);
 }
 
-import * as YAML from "https://deno.land/std@0.105.0/encoding/yaml.ts";
 console.log({ host: getEnv("KUBERNETES_HOST") })
 
 const kubernetes = await autoDetectClient();
 
-console.log({ host: getEnv("KUBERNETES_HOST") })
 const coreApi = new CoreV1Api(kubernetes);
 const appsApi = new AppsV1Api(kubernetes);
 const networkApi = new NetworkingV1Api(kubernetes);
