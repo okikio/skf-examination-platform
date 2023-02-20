@@ -45,9 +45,11 @@ function getEnv(name: string) {
   return env[name] ?? Deno.env.get(name);
 }
 
+import * as YAML from "https://deno.land/std@0.105.0/encoding/yaml.ts";
 console.log({ host: getEnv("KUBERNETES_HOST") })
 
 const kubernetes = await autoDetectClient();
+
 console.log({ host: getEnv("KUBERNETES_HOST") })
 const coreApi = new CoreV1Api(kubernetes);
 const appsApi = new AppsV1Api(kubernetes);

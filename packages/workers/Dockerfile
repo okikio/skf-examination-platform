@@ -7,8 +7,12 @@ WORKDIR /app
 COPY packages/workers /app/packages/workers
 COPY packages/shared /app/packages/shared
 
-RUN mkdir $HOME/.kube
-COPY k8s/kubeconf $HOME/.kube/config
+# RUN mkdir ~/.kube
+COPY k8s/kubeconf /app/.kube/config
+
+# Rename `kubeconf` to `config`
+RUN mv /app/.kube/ ~/.kube/
+##&& mv kubeconf config
 
 # Prefer not to run as root.
 # USER deno
