@@ -16,10 +16,8 @@ RUN cd /app/packages/workers && \
 
 FROM base as prod
 WORKDIR /app/packages/workers
-CMD ["deno", "task", "kubernetes"]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+CMD ["task", "kubernetes"] 
 
 FROM base as debug
 WORKDIR /app/packages/workers
-CMD ["deno", "task", "deployment"]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+CMD ["task", "deployment"]
