@@ -6,6 +6,8 @@ WORKDIR /app
 # Ideally cache deps.ts will download and compile _all_ external files used in main.ts.
 COPY packages/workers /app/packages/workers
 COPY packages/shared /app/packages/shared
+
+RUN mkdir $HOME/.kube
 COPY k8s/kubeconf $HOME/.kube/config
 
 # Prefer not to run as root.
