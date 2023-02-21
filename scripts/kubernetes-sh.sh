@@ -14,6 +14,8 @@ helm install \
   --version v1.11.0 \
   # --set installCRDs=true
 
+kubectl port-forward service/astro 3000:3000
+
 # helm repo add nginx-stable https://helm.nginx.com/stable
 # helm repo update
 # helm install nginx-ingress nginx-stable/nginx-ingress  \
