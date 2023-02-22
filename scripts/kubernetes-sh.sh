@@ -14,6 +14,8 @@ helm install \
   --version v1.11.0 \
   # --set installCRDs=true
 
+sleep 10
+
 kubectl port-forward service/astro 3000:3000
 
 # helm repo add nginx-stable https://helm.nginx.com/stable

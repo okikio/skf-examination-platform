@@ -57,25 +57,19 @@ pnpm install --recursive
 
 ## Running Locally
 
-Step 1. Create cluster
-
-```sh
-pnpm kind:create
-```
-
-Step 2. Build `astro` & `workers` Docker container
+Step 1. Build `astro` & `workers` Docker container
 
 ```sh
 pnpm docker
 ```
 
-Step 3. Load local docker images in `kubernetes`
+Step 2. Create cluster
 
 ```sh
-pnpm kind:load
+pnpm kind:create
 ```
 
-Step 4. Start `kubernetes`
+Step 3. Start `kubernetes`
 
 ```sh
 pnpm start

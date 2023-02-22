@@ -38,7 +38,15 @@ import { config } from '@skf/shared/config.ts';
 import rascal from 'rascal';
 const { createBrokerAsPromised } = rascal;
 
-const kubernetes = await autoDetectClient();
+const env = await dotenv();
+
+function getEnv(name: string) { 
+  return env[name] ?? Deno.env.get(name);
+}
+
+console.log({ host: getEnv("KUBERNETES_HOST"), HOME: getEnv("HOME"), envlist: Deno.env.toObject() })
+
+//const kubernetes = await autoDetectClient();
 console.log({
   kubernetes
 })
@@ -51,13 +59,7 @@ const networkApi = new NetworkingV1Api(kubernetes);
 const namespaces = await coreApi.getNamespaceList();
 console.log({ namespaces })
 
-const env = await dotenv();
 
-function getEnv(name: string) { 
-  return env[name] ?? Deno.env.get(name);
-}
-
-console.log({ host: getEnv("KUBERNETES_HOST"), HOME: getEnv("HOME"), envlist: Deno.env.toObject() })
 
 let labs_protocol: string | undefined;
 let labs_domain = getEnv("SKF_LABS_DOMAIN") ?? "";

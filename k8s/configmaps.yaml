@@ -7,6 +7,7 @@ data:
   KUBERNETES_HOST: kubernetes
   SKF_LABS_DOMAIN: http://localhost
   SKF_LABS_DEPLOY_MODE: port
+  KUBECONFIG: /root/.kube/config
 ---  
 apiVersion: v1
 kind: ConfigMap

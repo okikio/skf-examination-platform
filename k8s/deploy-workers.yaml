@@ -37,7 +37,7 @@ spec:
       #   runAsUser: 1000
       containers:
         - name: workers
-          image: "workers:skf"
+          image: "workers:latest"
           imagePullPolicy: Never
           env:
           -  name: RABBIT_MQ_CONN_STRING
@@ -60,6 +60,11 @@ spec:
                configMapKeyRef:
                  name: workers
                  key: KUBERNETES_HOST
+          -  name: KUBECONFIG
+             valueFrom:
+               configMapKeyRef:
+                 name: workers
+                 key: KUBECONFIG
           -  name: SKF_LABS_DOMAIN
              valueFrom:
                configMapKeyRef:

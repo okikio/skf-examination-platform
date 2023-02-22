@@ -6,13 +6,7 @@ WORKDIR /app
 # Ideally cache deps.ts will download and compile _all_ external files used in main.ts.
 COPY packages/workers /app/packages/workers
 COPY packages/shared /app/packages/shared
-
-# RUN mkdir ~/.kube
-COPY k8s/kubeconf /app/.kube/config
-
-# Rename `kubeconf` to `config`
-RUN mv /app/.kube/ ~/.kube/
-##&& mv kubeconf config
+COPY k8s/kubeconf /root/.kube/config
 
 # Prefer not to run as root.
 # USER deno
