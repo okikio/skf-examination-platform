@@ -5,7 +5,7 @@ import {
   fromServicePort, toServicePort,
   fromNamespace, toNamespace,
 } from "https://deno.land/x/kubernetes_apis/builtin/core@v1/mod.ts";
-import { fromObjectMeta, toObjectMeta } from 'https://deno.land/x/kubernetes_apis/builtin/meta@v1/structs.ts';
+import { fromObjectMeta, toObjectMeta } from "https://deno.land/x/kubernetes_apis@v0.4.0/builtin/meta@v1/structs.ts";
 import {
   NetworkingV1Api,
   fromIngressSpec, toIngressSpec,
@@ -38,19 +38,26 @@ import { config } from '@skf/shared/config.ts';
 import rascal from 'rascal';
 const { createBrokerAsPromised } = rascal;
 
+const kubernetes = await autoDetectClient();
+console.log({
+  kubernetes
+})
+
+const coreApi = new CoreV1Api(kubernetes);
+const appsApi = new AppsV1Api(kubernetes);
+const networkApi = new NetworkingV1Api(kubernetes);
+
+
+const namespaces = await coreApi.getNamespaceList();
+console.log({ namespaces })
+
 const env = await dotenv();
 
 function getEnv(name: string) { 
   return env[name] ?? Deno.env.get(name);
 }
 
-console.log({ host: getEnv("KUBERNETES_HOST") })
-
-const kubernetes = await autoDetectClient();
-
-const coreApi = new CoreV1Api(kubernetes);
-const appsApi = new AppsV1Api(kubernetes);
-const networkApi = new NetworkingV1Api(kubernetes);
+console.log({ host: getEnv("KUBERNETES_HOST"), HOME: getEnv("HOME"), envlist: Deno.env.toObject() })
 
 let labs_protocol: string | undefined;
 let labs_domain = getEnv("SKF_LABS_DOMAIN") ?? "";
@@ -542,6 +549,7 @@ export async function deployContainer(rpc_body: string) {
 try {
   const broker = await createBrokerAsPromised(config);
   broker.on('error', console.error);
+  console.log({ config });
 
   // Consume a message
   const subscription = await broker.subscribe('deployment_subscription', {
@@ -554,6 +562,7 @@ try {
       const props = message.properties;
       const method = message.fields;
 
+      console.log({ message });
       if (method.routingKey === "deploy") {
         const response = await deployContainer(
           ArrayBuffer.isView(content) || content instanceof ArrayBuffer ?
