@@ -1,8 +1,8 @@
 {
   "importMap": "./import_map.json",
   "tasks": {
-    "kubernetes": "deno run --allow-all  --unstable ./kubernetes.ts",
-    "deployment": "deno run --allow-read --allow-run=kubectl --allow-net --allow-env  --unstable ./deployment.ts",
+    "kubernetes": "deno run --unstable --allow-all --allow-read=$HOME/.kube --allow-net --allow-env ./kubernetes.ts",
+    "deployment": "deno run --allow-read --allow-run=kubectl --allow-net --allow-env --unstable ./deployment.ts",
     "hello": "deno run ./hello.ts"
   }
 }

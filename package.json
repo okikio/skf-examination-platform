@@ -16,11 +16,11 @@
     "start:astro": "pnpm --filter=astro start:server",
     "build:astro": "pnpm --filter=astro build",
     "dev:astro": "pnpm --filter=astro dev",
-    "kompose": "kompose convert --out ./k8s/kind.yaml",
     "docker": "pnpm docker:astro && pnpm docker:workers",
     "docker:workers": "docker build -t workers:latest -f ./packages/workers/Dockerfile --target prod . --no-cache",
     "docker:astro": "docker build -t astro:latest -f ./packages/astro/Dockerfile --target dev . --no-cache",
-    "kind:create": "sh ./scripts/cluster-create-sh.sh"
+    "kind:create": "sh ./scripts/cluster-create-sh.sh",
+    "kind:load": "kind load docker-image workers:latest astro:latest"
   },
   "devDependencies": {
     "typescript": "^4.9.5"
