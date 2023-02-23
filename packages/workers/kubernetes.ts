@@ -43,10 +43,9 @@ const env = await dotenv();
 function getEnv(name: string) { 
   return env[name] ?? Deno.env.get(name);
 }
-
 console.log({ host: getEnv("KUBERNETES_HOST"), HOME: getEnv("HOME"), envlist: Deno.env.toObject() })
 
-//const kubernetes = await autoDetectClient();
+const kubernetes = await autoDetectClient();
 console.log({
   kubernetes
 })
