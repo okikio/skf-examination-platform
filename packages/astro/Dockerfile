@@ -7,6 +7,7 @@ COPY ./pnpm-lock.yaml ./
 RUN pnpm fetch
 
 ADD . ./
+RUN pnpm intall -r
 
 # Development Target
 FROM base as dev

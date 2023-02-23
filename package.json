@@ -17,10 +17,10 @@
     "build:astro": "pnpm --filter=astro build",
     "dev:astro": "pnpm --filter=astro dev",
     "docker": "pnpm docker:astro && pnpm docker:workers",
-    "docker:workers": "docker build -t workers:latest -f ./packages/workers/Dockerfile --target prod . --no-cache",
-    "docker:astro": "docker build -t astro:latest -f ./packages/astro/Dockerfile --target dev . --no-cache",
+    "docker:workers": "docker build -t workers:skf -f ./packages/workers/Dockerfile --target prod . --no-cache",
+    "docker:astro": "docker build -t astro:skf -f ./packages/astro/Dockerfile --target dev . --no-cache",
     "kind:create": "sh ./scripts/cluster-create-sh.sh",
-    "kind:load": "kind load docker-image workers:latest astro:latest"
+    "kind:load": "kind load docker-image workers:skf astro:skf"
   },
   "devDependencies": {
     "typescript": "^4.9.5"

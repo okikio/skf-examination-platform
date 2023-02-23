@@ -37,7 +37,7 @@ spec:
       #   runAsUser: 1000
       containers:
         - name: workers
-          image: "workers:latest"
+          image: "workers:skf"
           imagePullPolicy: Never
           env:
           -  name: RABBIT_MQ_CONN_STRING
@@ -76,4 +76,3 @@ spec:
                  name: workers
                  key: SKF_LABS_DEPLOY_MODE
 ---
-
