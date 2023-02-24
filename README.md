@@ -62,30 +62,6 @@ Step 1. Create cluster
 ```sh
 pnpm kind:create
 ```
-Copy the `kuberconfig` yaml output in the terminal to [./k8s/kubeconf](./k8s/kubeconf), and replace the cluster server with `https://kubernetes`
-
-The `./k8s/kubeconf` should look like this
-```yaml
-apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority-data: LS0tLS1CRUdJTiBD...
-    server: https://kubernetes # Change the server to `https://kubernetes` so the `workers` Deno pod works while running in kubernetes
-  name: kind-kind
-contexts:
-- context:
-    cluster: kind-kind
-    user: kind-kind
-  name: kind-kind
-current-context: kind-kind
-kind: Config
-preferences: {}
-users:
-- name: kind-kind
-  user:
-    client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0F...
-    client-key-data: LS0tLS1CRUdJTiBSU0EgUF...
-```
 
 Step 2. Build `astro` & `workers` Docker container
 

@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-for yaml in k8s/*.yaml; do
-    kubectl apply -f $yaml;
-done
+
+# Setup, rabbitmq first as it takes time
+kubectl apply -f k8s/configmaps.yaml
+kubectl apply -f k8s/deploy-rabbitmq.yaml
+sleep 20
+kubectl apply -f k8s/deploy-astro.yaml
+kubectl apply -f k8s/deploy-workers.yaml
+kubectl apply -f k8s/ingress.yaml
+
 
 # helm repo add jetstack https://charts.jetstack.io
 # helm repo update
@@ -14,9 +20,10 @@ done
 #   --version v1.11.0 \
 #   # --set installCRDs=true
 
-sleep 30
+sleep 20
 
 kubectl port-forward service/astro 3000:3000
+kubectl port-forward service/rabbitmq 15672:15672
 
 # helm repo add nginx-stable https://helm.nginx.com/stable
 # helm repo update
