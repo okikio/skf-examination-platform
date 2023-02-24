@@ -1,9 +1,11 @@
-import { Reflector, KubeConfigRestClient, ClientProviderChain } from 'https://deno.land/x/kubernetes_client/mod.ts';
+import { Reflector, KubeConfigRestClient, ClientProviderChain, KubectlRawRestClient } from 'https://deno.land/x/kubernetes_client/mod.ts';
+import type {  RestClient } from 'https://deno.land/x/kubernetes_client/mod.ts';
 import {
   CoreV1Api,
   fromService, toService,
   fromServicePort, toServicePort,
   fromNamespace, toNamespace,
+  
 } from "https://deno.land/x/kubernetes_apis/builtin/core@v1/mod.ts";
 import { fromObjectMeta, toObjectMeta } from "https://deno.land/x/kubernetes_apis@v0.4.0/builtin/meta@v1/structs.ts";
 import {
@@ -49,10 +51,10 @@ console.log({ host: getEnv("KUBERNETES_HOST"), HOME: getEnv("HOME"), envlist: De
 
 export const DefaultClientProvider
   = new ClientProviderChain([
-    // ['InCluster', () => KubeConfigRestClient.forInCluster()],
     ['KubeConfig', () => KubeConfigRestClient.readKubeConfig()],
-    // ['KubectlProxy', () => KubeConfigRestClient.forKubectlProxy()],
-    // ['KubectlRaw', async () => new KubectlRawRestClient()],
+    ['InCluster', () => KubeConfigRestClient.forInCluster()],
+    ['KubectlProxy', () => KubeConfigRestClient.forKubectlProxy()],
+    ['KubectlRaw', async () => new KubectlRawRestClient()],
   ]);
 
 /**
@@ -561,7 +563,7 @@ export async function deployContainer(rpc_body: string) {
     const response = await getServiceExposedIP(deployment, user_id)
     const ports = await getHostPortFromResponse("node-port", response)
     
-    await portForward(deployment, user_id, Number(ports))
+    // await portForward(deployment, user_id, Number(ports))
     return ports
   }
 }

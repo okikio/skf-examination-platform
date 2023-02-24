@@ -2,15 +2,5 @@
   "name": "@skf/workers",
   "type": "module",
   "version": "0.0.1",
-  "private": true,
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "scripts": {
-    "deployment": "deno run -A ./deployment.ts",
-    "kubernetes": "deno run -A ./kubernetes.ts"
-  },
-  "dependencies": {
-    "@skf/shared": "workspace:^0.0.1"
-  }
+  "private": true
 }

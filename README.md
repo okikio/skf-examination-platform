@@ -24,8 +24,7 @@ Step 3. Install `kind`, `kubectl`, `minikube`, `helm`, and `kompose`
 brew install kind &&
 brew install kubectl &&
 brew install minikube &&
-brew install helm &&
-brew install kompose 
+brew install helm
 ```
 
 > Installation docs (just in case you can't or don't want to use `homebrew`):
@@ -33,7 +32,6 @@ brew install kompose
 > * [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 > * [minikube](https://minikube.sigs.k8s.io/docs/start/)
 > * [helm](https://helm.sh/docs/intro/install/)
-> * [kompose](https://kompose.io/installation/)
 
 Step 4. Install `nvm` and `node` 19
 
