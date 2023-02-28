@@ -1,11 +1,10 @@
 import { Reflector, KubeConfigRestClient, ClientProviderChain, KubectlRawRestClient } from 'https://deno.land/x/kubernetes_client/mod.ts';
-import type {  RestClient } from 'https://deno.land/x/kubernetes_client/mod.ts';
+import type { RestClient } from 'https://deno.land/x/kubernetes_client/mod.ts';
 import {
   CoreV1Api,
   fromService, toService,
   fromServicePort, toServicePort,
   fromNamespace, toNamespace,
-  
 } from "https://deno.land/x/kubernetes_apis/builtin/core@v1/mod.ts";
 import { fromObjectMeta, toObjectMeta } from "https://deno.land/x/kubernetes_apis@v0.4.0/builtin/meta@v1/structs.ts";
 import {
@@ -47,14 +46,12 @@ function getEnv(name: string) {
 }
 console.log({ host: getEnv("KUBERNETES_HOST"), HOME: getEnv("HOME"), envlist: Deno.env.toObject() })
 
-
-
 export const DefaultClientProvider
   = new ClientProviderChain([
-    ['KubeConfig', () => KubeConfigRestClient.readKubeConfig()],
-    ['InCluster', () => KubeConfigRestClient.forInCluster()],
-    ['KubectlProxy', () => KubeConfigRestClient.forKubectlProxy()],
-    ['KubectlRaw', async () => new KubectlRawRestClient()],
+    ['KubeConfig', () => KubeConfigRestClient.readKubeConfig("../../k8s/kubeconf")], // getEnv("KUBECONFIG")
+    // ['InCluster', () => KubeConfigRestClient.forInCluster()],
+    // ['KubectlProxy', () => KubeConfigRestClient.forKubectlProxy()],
+    // ['KubectlRaw', async () => new KubectlRawRestClient()],
   ]);
 
 /**
@@ -297,39 +294,12 @@ export async function portForward(deployment: string, user_id: string, ports: nu
         typeof resource_name == "string" &&
         label.includes(deployment)
       ) {
-
-        // const query = new URLSearchParams();
-        // const opts: {
-        //   ports?: number;
-        //   abortSignal?: AbortSignal;
-        // } = { ports }
-        // if (opts["ports"] != null) query.append("ports", String(opts["ports"]));
-        // const resp = await kubernetes.performRequest({
-        //   method: "POST",
-        //   path: `/api/v1/namespaces/${user_id}/pods/${resource_name}/portforward`,
-        //   expectJson: true,
-        //   querystring: query,
-        //   abortSignal: opts.abortSignal,
-        // });
-        // Deno.run({
-        //   cmd: ['kubectl', ]
-        // })
-
-
-        return await response.connectGetPodPortforward(resource_name, {
+        console.log({ resource_name, user_id })
+        return await response.connectPostPodPortforward(resource_name, {
           ports
         })
-
-      //     // const podPhase = pod.status?.phase;
-      //     // if (podPhase === "Running") {
-      //     //   podWatcher.stop();
-      //     //   return podPhase;
-      //     // }
       }
     }
-    // await response.connectGetPodPortforward(deployment, {
-    //   ports
-    // })
   } catch (e) {
     throw new Error('Failed to deploy, error port forward!', {
       cause: e
@@ -368,7 +338,6 @@ export async function getHostPortFromResponse(type: "node-port" | "target-port" 
     })
   }
 }
-
 
 export async function createIngress(networking_v1_api: NetworkingV1Api, hostname: string, deployment: string, service_port: number, user_id: string) {
   try {
@@ -562,8 +531,9 @@ export async function deployContainer(rpc_body: string) {
   } else {
     const response = await getServiceExposedIP(deployment, user_id)
     const ports = await getHostPortFromResponse("node-port", response)
-    
-    // await portForward(deployment, user_id, Number(ports))
+    const targetPorts = await getHostPortFromResponse("target-port", response)
+
+    await portForward(deployment, user_id, Number(targetPorts))
     return ports
   }
 }
