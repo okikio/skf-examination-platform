@@ -6,7 +6,7 @@ kubectl apply -f k8s/deploy-rabbitmq.yaml
 sleep 20
 kubectl apply -f k8s/deploy-astro.yaml
 kubectl apply -f k8s/deploy-workers.yaml
-kubectl apply -f k8s/ingress.yaml
+#kubectl apply -f k8s/ingress.yaml
 
 
 # helm repo add jetstack https://charts.jetstack.io
