@@ -48,10 +48,10 @@ console.log({ host: getEnv("KUBERNETES_HOST"), HOME: getEnv("HOME"), envlist: De
 
 export const DefaultClientProvider
   = new ClientProviderChain([
-    ['KubeConfig', () => KubeConfigRestClient.readKubeConfig("/root/.kube/config")], // getEnv("KUBECONFIG")
-    // ['InCluster', () => KubeConfigRestClient.forInCluster()],
-    // ['KubectlProxy', () => KubeConfigRestClient.forKubectlProxy()],
-    // ['KubectlRaw', async () => new KubectlRawRestClient()],
+    ['KubeConfig', () => KubeConfigRestClient.readKubeConfig(getEnv("KUBECONFIG"))], // 
+    ['InCluster', () => KubeConfigRestClient.forInCluster()],
+    ['KubectlProxy', () => KubeConfigRestClient.forKubectlProxy()],
+    ['KubectlRaw', async () => new KubectlRawRestClient()],
   ]);
 
 /**
