@@ -103,13 +103,15 @@ async function performRequest(opts: RequestOptions): Promise<any> {
     caCerts: serverCert ? [serverCert] : [],
     certChain: userCert,
     privateKey: userKey,
-    proxy: { url: "https://localhost:8001" }
+    // proxy: { url: "http://localhost:8001" }
   });
 
+  const url = new URL(path, ctx.cluster.server);
   console.log({
-    url: new URL(path, ctx.cluster.server)
+    url
   })
-  const resp = await fetch(new URL(path, ctx.cluster.server), {
+  url.protocol = url.protocol.replace("http", "ws")
+  const resp = await fetch(url, {
     method: opts.method,
     body: opts.bodyStream ?? opts.bodyRaw ?? JSON.stringify(opts.bodyJson),
     redirect: 'error',
