@@ -9,5 +9,11 @@ kubectl cluster-info --context kind-kind
 cp /home/node/.kube/config ./k8s/kubeconf
 
 #replace ip+port to https://kubernetes
-find ./k8s/kubeconf -type f -exec sed -i -e "s,https://127.0.0.1:.*,https://kubernetes,g" {} \;
+FILE=./k8s/kubeconf
+if [[ -f "$FILE" ]]; then
+  yq -i '
+    .clusters[0].cluster.server = "https://kubernetes" | 
+    .networking.mode = "host-bridge" 
+  ' ./k8s/kubeconf
+fi
 
